@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <script
+            crossorigin
+            src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+            crossorigin
+            src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <title>React test page</title>
+</head>
+<body>
+<div id="root"></div>
+<script>
+    function resize() {
+        const element = React.createElement(
+            'div',
+            {className: 'main'},
+            React.createElement('h1', null, 'размер окна'),
+            React.createElement('h1', null, 'в пикселях'),
+            React.createElement('h2', null, window.innerWidth + 'px на ' + window.innerHeight + 'px')
+        );
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(element);
+    }
+    resize();
+    window.onresize = resize;
+</script>
+</body>
+</html> 
