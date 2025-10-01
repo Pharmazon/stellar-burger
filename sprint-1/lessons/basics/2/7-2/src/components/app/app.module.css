@@ -1,0 +1,15 @@
+.app {
+  width: 100%;
+  max-width: 560px;
+  height: 576px;
+  margin: 0 auto;
+  padding: 102px 80px;
+  color: #23272E;
+}
+
+@media screen and (max-width: 750px) {
+  .app {
+    padding: 60px 20px;
+    box-sizing: border-box;
+  }
+}
