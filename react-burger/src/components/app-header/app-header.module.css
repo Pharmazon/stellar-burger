@@ -1,0 +1,30 @@
+.header {
+    background: #1C1C21;
+    width: 1920px;
+    height: 88px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.header_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 1600px;
+}
+
+.left_group {
+    display: flex;
+    gap: 30px;
+}
+
+.center_item {
+    margin: 0 auto;
+}
+
+.right_item {
+    margin-left: auto;
+}
