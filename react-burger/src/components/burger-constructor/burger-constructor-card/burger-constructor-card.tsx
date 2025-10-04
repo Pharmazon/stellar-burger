@@ -28,7 +28,7 @@ class BurgerConstructorCard extends React.Component<BurgerConstructorCardProps> 
                     <div className={showDragIcon ? '' : styles.hidden}>
                         <DragIcon type="primary" />
                     </div> 
-                    <div>
+                    <div className={styles.element}>
                         <ConstructorElement
                             type={ constructorElementType }
                             isLocked={ isLocked }

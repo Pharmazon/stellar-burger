@@ -1,6 +1,6 @@
 .main_container {
-    width: 600px;
-    height: 912px;
+    max-width: 600px;
+    max-height: 912px;
 }
 
 .burger_container {

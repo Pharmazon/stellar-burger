@@ -14,7 +14,7 @@ class AppHeaderCard extends React.Component<AppHeaderCardProps> {
         return (
             <div className={`${styles.header_block}`}>
                 <div>{this.props.iconComponent}</div>
-                <div className={`${styles.header_block_text} text text_type_main-default ${activeStyle} ml-2`}>{this.props.text}</div>
+                <span className={`${styles.header_block_text} text text_type_main-default ${activeStyle} ml-2`}>{this.props.text}</span>
             </div>
         );
     }

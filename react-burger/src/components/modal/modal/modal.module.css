@@ -1,0 +1,22 @@
+.header_container {
+    width: 640px;
+    height: 64px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content_container {
+    background: #1C1C21;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    border: 1px solid white;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    border-radius: 40px;
+    transform: translate(-50%, -50%)
+}
