@@ -9,7 +9,7 @@ interface BurgerConstructorProps {
     ingredients: Ingredient[];
 }
 
-const BurgerConstructor: React.FC<BurgerConstructorProps> = ({ ingredients }) => {
+const BurgerConstructor = ({ingredients}: BurgerConstructorProps) => {
 
     const [selectedBun, setSelectedBun] = useState<string>("643d69a5c3f7b9001cfa093c");
     const [selectedIngredients, setSelectedIngredients] = useState<string[]>([

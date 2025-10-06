@@ -5,19 +5,18 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 import {createPortal} from "react-dom";
 
 interface ModalProps {
-    headerText?: string
-    children: ReactNode[]
+    title?: string
+    children: ReactNode
     width: number,
     height: number,
-    isModalOpened: boolean
     onClose: () => void
 }
 
-const Modal: React.FC<ModalProps> = ({width, height, children, headerText, isModalOpened, onClose}) => {
+const Modal = ({width, height, children, title, onClose}: ModalProps) => {
 
     const [closeIconType, setCloseIconType] = useState<"primary" | "success">("primary");
 
-    const onCloseIconMouseAbove = () => setCloseIconType("success");
+    const onCloseIconMouseOver = () => setCloseIconType("success");
     const onCloseIconMouseLeave = () => setCloseIconType("primary");
 
     const handleClose = useCallback(() => {
@@ -31,31 +30,23 @@ const Modal: React.FC<ModalProps> = ({width, height, children, headerText, isMod
             }
         };
 
-        if (isModalOpened) {
-            document.addEventListener('keydown', handleEscapeButtonClick);
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
-        }
+        document.addEventListener('keydown', handleEscapeButtonClick);
+        document.body.style.overflow = 'hidden';
 
         return () => {
             document.removeEventListener('keydown', handleEscapeButtonClick);
             document.body.style.overflow = 'unset';
         };
-    }, [isModalOpened, handleClose]);
-
-    if (!isModalOpened) {
-        return null;
-    }
+    }, [handleClose]);
 
     return createPortal(
         <ModalOverlay onClose={handleClose}>
             <div style={{ width, height }} className={styles.content_container}>
                 <div className={`${styles.header_container} mb-5`}>
-                    <div className={'text text_type_main-large'}>{headerText}</div>
+                    <div className={'text text_type_main-large'}>{title}</div>
                     <div
-                        onMouseEnter={onCloseIconMouseAbove}
                         onMouseLeave={onCloseIconMouseLeave}
+                        onMouseOver={onCloseIconMouseOver}
                         className={styles.close_icon}
                     >
                         <CloseIcon

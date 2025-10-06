@@ -1,23 +1,22 @@
-import React, {useState} from "react";
+import React from "react";
 import styles from './burger-ingredients-card.module.css';
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../../../utils/ingredient";
 import IngredientDetails from "../../modal/ingredient-details/ingredient-details";
 import {IMAGE_ALT_TEXT_MAP, IngredientId} from "../../../utils/constants";
+import Modal from "../../modal/modal/modal";
+import {useModal} from "../../../hooks/useModal";
 
 interface BurgerIngredientsCardProps {
     ingredient: Ingredient;
 }
 
-const BurgerIngredientsCard: React.FC<BurgerIngredientsCardProps> = ({ ingredient }) => {
+const BurgerIngredientsCard = ({ingredient}: BurgerIngredientsCardProps) => {
 
-    const [isModalOpened, setIsModalOpened] = useState(false);
-
-    const handleOpenModal = () => setIsModalOpened(true);
-    const handleCloseModal = () => setIsModalOpened(false);
+    const {isModalOpened, openModal, closeModal} = useModal();
 
     return (
-        <div className={`${styles.main_container} ml-4 mt-4`} onClick={handleOpenModal}>
+        <div className={`${styles.main_container} ml-4 mt-4`} onClick={openModal}>
             <div className={styles.main_icon}>
                 <img
                     src={ingredient.image}
@@ -33,12 +32,17 @@ const BurgerIngredientsCard: React.FC<BurgerIngredientsCardProps> = ({ ingredien
             </div>
              
             <span className={`${styles.description} text text_type_main-small`}>{ingredient.name}</span>
-            
-            <IngredientDetails
-                ingredient={ingredient}
-                isModalOpened={isModalOpened}
-                onClose={handleCloseModal}
-            />
+
+            {isModalOpened && (
+                <Modal
+                    title={"Детали ингредиента"}
+                    onClose={closeModal}
+                    width={720}
+                    height={539}
+                >
+                    <IngredientDetails ingredient={ingredient}/>
+                </Modal>
+            )}
         </div>
     );
 }

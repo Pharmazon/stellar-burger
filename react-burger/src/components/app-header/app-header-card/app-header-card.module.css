@@ -1,9 +1,10 @@
 .header_block {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: 56px;
+    width: 170px;
     border-radius: 120px;
 }
 

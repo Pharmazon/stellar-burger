@@ -25,7 +25,10 @@ const App = () => {
         const getIngredientsFromServer = () => {
             fetch(BACKEND_URL)
                 .then(response => {
-                    return response.json();
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    return Promise.reject(`Ошибка ${response.status}`);
                 })
                 .then(response => {
                     if (!isMounted) {
@@ -60,33 +63,33 @@ const App = () => {
 
     if (isLoading) {
         return (
-            <body>
+            <div>
                 <AppHeader/>
                 <main className={styles.body}>
                     <div className={styles.body_container}>
                         <div>Загрузка данных с сервера...</div>
                     </div>
                 </main>
-            </body>
+            </div>
         );
     }
     
     if (hasError) {
         return (
-            <body>
+            <div>
                 <AppHeader/>
                 <main className={styles.body}>
                     <div className={styles.body_container}>
                         <div>Ошибка загрузки данных с сервера!</div>
                     </div>
                 </main>
-            </body>
+            </div>
         );
     }
     
     
     return (
-        <body>
+        <div>
             <AppHeader/>
             <main className={styles.body}>
                 <div className={styles.body_container}>
@@ -94,7 +97,7 @@ const App = () => {
                     <BurgerConstructor ingredients={ingredients}/>
                 </div>
             </main>
-        </body>
+        </div>
     );
 }
 

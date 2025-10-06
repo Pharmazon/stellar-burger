@@ -6,19 +6,14 @@ interface NutritionCardProps {
     value: number
 }
 
-interface NutritionCardState {
-}
+const NutritionCard = ({name, value}: NutritionCardProps) => {
 
-class NutritionCard extends React.Component<NutritionCardProps, NutritionCardState> {
-
-    render() {
-        return (
-            <div className={styles.container}>
-                <span className={`${styles.card} text text_type_main-default text_color_inactive`}>{this.props.name}</span>
-                <span className={`${styles.card} text text_type_digits-default text_color_inactive`}>{this.props.value}</span>
-            </div>
-        );
-    }
+    return (
+        <div className={styles.container}>
+            <span className={`${styles.card} text text_type_main-default text_color_inactive`}>{name}</span>
+            <span className={`${styles.card} text text_type_digits-default text_color_inactive`}>{value}</span>
+        </div>
+    );
 }
 
 export default NutritionCard;

@@ -9,9 +9,9 @@ interface BurgerIngredientsProps {
     ingredients: Ingredient[];
 }
 
-export type IngredientSection = 'bun' | 'sauce' | 'main';
+type IngredientSection = 'bun' | 'sauce' | 'main';
 
-const BurgerIngredients: React.FC<BurgerIngredientsProps> = ({ ingredients }) => {
+const BurgerIngredients = ({ingredients}: BurgerIngredientsProps) => {
 
     const [currentTab, setCurrentTab] = useState(BUN_TYPE);
     
@@ -21,11 +21,11 @@ const BurgerIngredients: React.FC<BurgerIngredientsProps> = ({ ingredients }) =>
 
     const getRef = (section: IngredientSection) => {
         switch (section) {
-            case "bun":
+            case BUN_TYPE:
                 return bunRef;
-            case "sauce":
+            case SAUCE_TYPE:
                 return sauceRef;
-            case "main":
+            case MAIN_TYPE:
                 return mainRef;
             default:
                 throw new Error("Неизвестная секция ингредиентов");

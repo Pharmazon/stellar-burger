@@ -6,21 +6,22 @@ interface ModalOverlayProps {
     onClose: () => void
 }
 
-class ModalOverlay extends React.Component<ModalOverlayProps> {
+const ModalOverlay = ({children, onClose}: ModalOverlayProps) => {
 
-    handleOverlayClick = (e: React.MouseEvent) => {
+    const handleOverlayClick = (e: React.MouseEvent) => {
+        console.log('Overlay clicked: ', e.target, e.currentTarget);
+        console.log('Equals: ', e.target === e.currentTarget);
         if (e.target === e.currentTarget) {
-            this.props.onClose();
+            console.log(onClose);
+            onClose();
         }
     }
-    
-    render() {
-        return (
-            <div className={styles.container} onClick={this.handleOverlayClick}>
-                {this.props.children}
-            </div>
-        )
-    }
+
+    return (
+        <div className={styles.container} onClick={handleOverlayClick}>
+            {children}
+        </div>
+    )
 }
 
 export default ModalOverlay;
