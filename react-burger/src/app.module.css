@@ -1,0 +1,15 @@
+.body {
+  width: 1920px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.body_container {
+  width: 1600px;
+  height: 912px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

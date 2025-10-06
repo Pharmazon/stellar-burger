@@ -1,0 +1,13 @@
+.header_block {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    border-radius: 120px;
+}
+
+.header_block_text {
+    height: 24px;
+    text-align: left;
+}

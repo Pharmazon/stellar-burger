@@ -1,0 +1,21 @@
+.total_container {
+    width: 568px;
+    height: 64px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.total_currency {
+    height: 64px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.currency_icon svg {
+    width: 36px;
+    height: 36px;
+}
