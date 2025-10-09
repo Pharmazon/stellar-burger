@@ -1,6 +1,6 @@
 .container {
-    width: 600px;
-    height: 912px;
+    max-width: 600px;
+    max-height: 912px;
 }
 
 .button_block {
