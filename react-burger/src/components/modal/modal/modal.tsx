@@ -41,7 +41,7 @@ const Modal = ({width, height, children, title, onClose}: ModalProps) => {
 
     return createPortal(
         <ModalOverlay onClose={handleClose}>
-            <div style={{ width, height }} className={styles.content_container}>
+            <div style={{width, height}} className={styles.content_container} onClick={(e) => e.stopPropagation()}>
                 <div className={`${styles.header_container} mb-5`}>
                     <div className={'text text_type_main-large'}>{title}</div>
                     <div

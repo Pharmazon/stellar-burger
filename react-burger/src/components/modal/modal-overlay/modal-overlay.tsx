@@ -9,10 +9,8 @@ interface ModalOverlayProps {
 const ModalOverlay = ({children, onClose}: ModalOverlayProps) => {
 
     const handleOverlayClick = (e: React.MouseEvent) => {
-        console.log('Overlay clicked: ', e.target, e.currentTarget);
-        console.log('Equals: ', e.target === e.currentTarget);
+        e.stopPropagation();
         if (e.target === e.currentTarget) {
-            console.log(onClose);
             onClose();
         }
     }
