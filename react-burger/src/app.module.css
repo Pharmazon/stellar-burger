@@ -1,12 +1,16 @@
 .body {
-  width: 1920px;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .body_container {
-  width: 1600px;
+  max-width: 1600px;
+  width: 100%;
   height: 912px;
   display: flex;
   flex-direction: row;

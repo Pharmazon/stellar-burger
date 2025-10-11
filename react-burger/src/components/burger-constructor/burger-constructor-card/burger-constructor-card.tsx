@@ -9,38 +9,35 @@ interface BurgerConstructorCardProps {
     type?: string
 }
 
-class BurgerConstructorCard extends React.Component<BurgerConstructorCardProps> {
-    
-    render() {
+const BurgerConstructorCard = ({name, price, image, type}: BurgerConstructorCardProps) => {
 
-        const showDragIcon = this.props.type !== 'top' && this.props.type !== 'bottom';
-        const isLocked = this.props.type === 'top' || this.props.type === 'bottom';
+    const showDragIcon = type !== 'top' && type !== 'bottom';
+    const isLocked = type === 'top' || type === 'bottom';
 
-        const constructorElementType = this.props.type === 'top' 
-            ? 'top' 
-            : this.props.type === 'bottom' 
-                ? 'bottom' 
-                : undefined
-        
-        return (
-            <div className={`${styles.container}`}>
-                <div className={`${styles.card}`}>
-                    <div className={showDragIcon ? '' : styles.hidden}>
-                        <DragIcon type="primary" />
-                    </div> 
-                    <div>
-                        <ConstructorElement
-                            type={ constructorElementType }
-                            isLocked={ isLocked }
-                            text={ this.props.name }
-                            price={ this.props.price }
-                            thumbnail={ this.props.image }
-                        />
-                    </div>
+    const constructorElementType = type === 'top'
+        ? 'top'
+        : type === 'bottom'
+            ? 'bottom'
+            : undefined
+
+    return (
+        <div className={`${styles.container}`}>
+            <div className={`${styles.card}`}>
+                <div className={showDragIcon ? '' : styles.hidden}>
+                    <DragIcon type="primary"/>
+                </div>
+                <div className={styles.element}>
+                    <ConstructorElement
+                        type={constructorElementType}
+                        isLocked={isLocked}
+                        text={name}
+                        price={price}
+                        thumbnail={image}
+                    />
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default BurgerConstructorCard;
