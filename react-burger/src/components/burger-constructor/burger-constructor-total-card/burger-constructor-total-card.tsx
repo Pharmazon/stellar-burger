@@ -4,15 +4,27 @@ import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-comp
 import OrderDetails from "../../modal/order-details/order-details";
 import Modal from "../../modal/modal/modal";
 import {useModal} from "../../../hooks/useModal";
+import {RootState, useAppDispatch} from "../../../services/store";
+import {useSelector} from "react-redux";
+import {createOrderRequest} from "../../../services/orderSlice";
+import Ingredient from "../../../utils/ingredient";
 
 interface BurgerConstructorTotalCardProps {
     total: number;
+    itemsToOrder: Ingredient[]
 }
 
-const BurgerConstructorTotalCard = ({total}: BurgerConstructorTotalCardProps) => {
+const BurgerConstructorTotalCard = ({total, itemsToOrder}: BurgerConstructorTotalCardProps) => {
 
     const {isModalOpened, openModal, closeModal} = useModal();
+    const dispatch = useAppDispatch();
+    const {order, status} = useSelector((state: RootState) => state.order);
 
+    const handleClick = async () => {
+        await dispatch(createOrderRequest(itemsToOrder));
+        openModal();
+    };
+    
     return (
         <div className={`${styles.total_container} ml-4 mt-10`}>
             <div className={styles.total_currency}>
@@ -26,19 +38,19 @@ const BurgerConstructorTotalCard = ({total}: BurgerConstructorTotalCardProps) =>
                     htmlType="button"
                     type="primary"
                     size="large"
-                    onClick={openModal}
+                    onClick={handleClick}
                 >
-                    Оформить заказ
+                    {'loading' === status ? 'Создаю заказ...' : 'Оформить заказ'}
                 </Button>
             </div>
 
-            {isModalOpened && (
+            {order && isModalOpened && (
                 <Modal
                     onClose={closeModal}
                     width={720}
                     height={718}
                 >
-                    <OrderDetails/>
+                    <OrderDetails orderId={order.number}/>
                 </Modal>
             )}
         </div>

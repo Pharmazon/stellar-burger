@@ -1,4 +1,5 @@
-export const BACKEND_URL = "https://norma.nomoreparties.space/api/ingredients";
+export const GET_INGREDIENTS_URL = "https://norma.education-services.ru/api/ingredients";
+export const CREATE_ORDER_URL = "https://norma.education-services.ru/api/orders";
 
 export const BUN_TYPE = 'bun';
 export const SAUCE_TYPE = 'sauce';

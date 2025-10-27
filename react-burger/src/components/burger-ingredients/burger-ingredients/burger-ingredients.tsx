@@ -1,23 +1,40 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import styles from './burger-ingredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredientsCard from "../burger-ingredients-card/burger-ingredients-card";
 import Ingredient from "../../../utils/ingredient";
 import {BUN_TYPE, MAIN_TYPE, SAUCE_TYPE} from "../../../utils/constants";
-
-interface BurgerIngredientsProps {
-    ingredients: Ingredient[];
-}
+import {fetchIngredients} from "../../../services/burgerIngredientsSlice";
+import {useSelector} from "react-redux";
+import {RootState, useAppDispatch} from "../../../services/store";
 
 type IngredientSection = 'bun' | 'sauce' | 'main';
 
-const BurgerIngredients = ({ingredients}: BurgerIngredientsProps) => {
+const BurgerIngredients = () => {
 
     const [currentTab, setCurrentTab] = useState(BUN_TYPE);
+    const {items: ingredients, status, error} = useSelector((state: RootState) => state.burgerIngredients);
+    const dispatch = useAppDispatch();
     
     const bunRef = useRef<HTMLDivElement>(null);
     const sauceRef = useRef<HTMLDivElement>(null);
     const mainRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        dispatch(fetchIngredients());
+    }, []);
+
+    const bunIngredients = useMemo(() => {
+        return ingredients.filter(ingredient => BUN_TYPE === ingredient.type);
+    }, [ingredients]);
+
+    const sauceIngredients = useMemo(() => {
+        return ingredients.filter(ingredient => SAUCE_TYPE === ingredient.type);
+    }, [ingredients]);
+
+    const mainIngredients = useMemo(() => {
+        return ingredients.filter(ingredient => MAIN_TYPE === ingredient.type);
+    }, [ingredients]);
 
     const getRef = (section: IngredientSection) => {
         switch (section) {
@@ -43,7 +60,16 @@ const BurgerIngredients = ({ingredients}: BurgerIngredientsProps) => {
     };
     
     const getByType = (section: IngredientSection): Ingredient[] => {
-        return ingredients.filter(ingredient => ingredient.type === section);
+        switch (section) {
+            case BUN_TYPE:
+                return bunIngredients;
+            case SAUCE_TYPE:
+                return sauceIngredients;
+            case MAIN_TYPE:
+                return mainIngredients;
+            default:
+                throw new Error("Неизвестная секция ингредиентов");
+        }
     }
 
     const renderIngredientCard = (ingredient: Ingredient)=> {
@@ -102,11 +128,22 @@ const BurgerIngredients = ({ingredients}: BurgerIngredientsProps) => {
                     Начинки
                 </Tab>
             </div>
-            <div className={styles.components_container}>
-                {renderIngredientSection("Булки", BUN_TYPE)}
-                {renderIngredientSection("Соусы", SAUCE_TYPE)}
-                {renderIngredientSection("Начинки", MAIN_TYPE)}
-            </div>
+
+            {'loading' === status &&
+                <div className={styles.components_container}>Получение списка ингредиентов...</div>
+            }
+
+            {'fail' === status &&
+                <div className={styles.components_container}>{error}</div>
+            }
+
+            {'success' === status &&
+                <div className={styles.components_container}>
+                    {renderIngredientSection("Булки", BUN_TYPE)}
+                    {renderIngredientSection("Соусы", SAUCE_TYPE)}
+                    {renderIngredientSection("Начинки", MAIN_TYPE)}
+                </div>
+            }
         </div>
     );
 }
