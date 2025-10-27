@@ -5,7 +5,15 @@ export const BUN_TYPE = 'bun';
 export const SAUCE_TYPE = 'sauce';
 export const MAIN_TYPE = 'main';
 
+export const DND_BURGER_INGREDIENT = 'DND_BURGER_INGREDIENT';
+export const DND_BURGER_BUN = 'DND_BURGER_BUN';
+export const DND_BURGER_CARD = 'DND_BURGER_CARD';
+
+export const TOP_POSITION = 'top';
+export const BOTTOM_POSITION = 'bottom';
+
 export type IngredientId = keyof typeof IMAGE_ALT_TEXT_MAP;
+export type CardPosition = 'top' | 'bottom' | null
 
 export const IMAGE_ALT_TEXT_MAP = {
     "643d69a5c3f7b9001cfa093c": "Светящаяся булочка с кратерами как на Луне",

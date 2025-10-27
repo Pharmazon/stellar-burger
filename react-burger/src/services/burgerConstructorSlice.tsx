@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import Ingredient from "../utils/ingredient";
+import {BurgerConstructorIngredient, Ingredient} from "../utils/ingredient";
 
 interface BurgerConstructorState {
-    ingredients: Ingredient[],
+    ingredients: BurgerConstructorIngredient[],
     selectedBun: Ingredient | null;
 }
 
@@ -11,16 +11,29 @@ const initialState: BurgerConstructorState = {
     selectedBun: null
 }
 
+interface MoveIngredientAction {
+    from: number;
+    to: number;
+}
+
 const burgerConstructorSlice = createSlice({
     name: 'burgerConstructor',
     initialState: initialState,
     reducers: {
-        addIngredient: (state, action: PayloadAction<Ingredient>) => {
+        moveIngredient: (state, action: PayloadAction<MoveIngredientAction>) => {
+            const {from, to} = action.payload;
+            const [movedItem] = state.ingredients.splice(from, 1);
+            state.ingredients.splice(to, 0, movedItem);
+        },
+        addBun: (state, action: PayloadAction<Ingredient>) => {
+            state.selectedBun = action.payload;
+        },
+        addIngredient: (state, action: PayloadAction<BurgerConstructorIngredient>) => {
             state.ingredients.push(action.payload);
         },
-        removeIngredient: (state, action: PayloadAction<string>) => {
+        removeIngredient: (state, action: PayloadAction<number>) => {
             state.ingredients = state.ingredients.filter(
-                (element) => element._id !== action.payload
+                (element) => element.num !== action.payload
             );
         }
     }
@@ -28,7 +41,9 @@ const burgerConstructorSlice = createSlice({
 
 export const {
     addIngredient,
-    removeIngredient
+    removeIngredient,
+    addBun,
+    moveIngredient
 } = burgerConstructorSlice.actions;
 
 export default burgerConstructorSlice.reducer;

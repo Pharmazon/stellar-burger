@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import Ingredient from "../utils/ingredient";
+import {BurgerConstructorIngredient} from "../utils/ingredient";
 import {CREATE_ORDER_URL} from "../utils/constants";
 
 export interface Order {
@@ -21,7 +21,7 @@ const initialState: OrderState = {
     error: null,
 };
 
-export const createOrderRequest = createAsyncThunk<Order, Ingredient[], { rejectValue: string }>(
+export const createOrderRequest = createAsyncThunk<Order, BurgerConstructorIngredient[], { rejectValue: string }>(
     'order/createOrderRequest',
     async (itemsToOrder, thunkAPI) => {
 
@@ -31,7 +31,7 @@ export const createOrderRequest = createAsyncThunk<Order, Ingredient[], { reject
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ingredients: itemsToOrder.map(item => item._id)}),
+                body: JSON.stringify({ingredients: itemsToOrder.map(item => item.item._id)}),
             });
 
             if (!response.ok) {

@@ -7,11 +7,11 @@ import {useModal} from "../../../hooks/useModal";
 import {RootState, useAppDispatch} from "../../../services/store";
 import {useSelector} from "react-redux";
 import {createOrderRequest} from "../../../services/orderSlice";
-import Ingredient from "../../../utils/ingredient";
+import {BurgerConstructorIngredient} from "../../../utils/ingredient";
 
 interface BurgerConstructorTotalCardProps {
     total: number;
-    itemsToOrder: Ingredient[]
+    itemsToOrder: BurgerConstructorIngredient[]
 }
 
 const BurgerConstructorTotalCard = ({total, itemsToOrder}: BurgerConstructorTotalCardProps) => {

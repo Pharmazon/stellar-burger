@@ -1,24 +1,41 @@
 import React from "react";
 import styles from './burger-constructor-card.module.css';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useAppDispatch} from "../../../services/store";
+import {removeIngredient} from "../../../services/burgerConstructorSlice";
+import {Ingredient} from "../../../utils/ingredient";
+import {BOTTOM_POSITION, BUN_TYPE, CardPosition, TOP_POSITION} from "../../../utils/constants";
 
-interface BurgerConstructorCardProps {
-    name: string;
-    price: number;
-    image: string;
-    type?: string
+export interface BurgerConstructorCardProps {
+    name: string
+    num: number | null
+    ingredient: Ingredient
+    type?: CardPosition
 }
 
-const BurgerConstructorCard = ({name, price, image, type}: BurgerConstructorCardProps) => {
+const BurgerConstructorCard = ({name, num, ingredient, type}: BurgerConstructorCardProps) => {
 
-    const showDragIcon = type !== 'top' && type !== 'bottom';
-    const isLocked = type === 'top' || type === 'bottom';
+    const dispatch = useAppDispatch();
 
-    const constructorElementType = type === 'top'
-        ? 'top'
-        : type === 'bottom'
-            ? 'bottom'
+    const showDragIcon = BUN_TYPE !== ingredient.type;
+    const isLocked = BUN_TYPE === ingredient.type;
+
+    const handleClick = () => {
+        if (num === null) {
+            return;
+        }
+        dispatch(removeIngredient(num));
+    };
+
+    const constructorElementType = TOP_POSITION === type
+        ? TOP_POSITION
+        : BOTTOM_POSITION === type
+            ? BOTTOM_POSITION
             : undefined
+
+    const price = BUN_TYPE === ingredient.type
+        ? ingredient.price / 2
+        : ingredient.price;
 
     return (
         <div className={`${styles.container}`}>
@@ -32,7 +49,8 @@ const BurgerConstructorCard = ({name, price, image, type}: BurgerConstructorCard
                         isLocked={isLocked}
                         text={name}
                         price={price}
-                        thumbnail={image}
+                        thumbnail={ingredient.image}
+                        handleClose={handleClick}
                     />
                 </div>
             </div>

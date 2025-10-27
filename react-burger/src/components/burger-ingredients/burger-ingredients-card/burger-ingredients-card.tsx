@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './burger-ingredients-card.module.css';
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import Ingredient from "../../../utils/ingredient";
+import {Ingredient} from "../../../utils/ingredient";
 import IngredientDetails from "../../modal/ingredient-details/ingredient-details";
 import {IMAGE_ALT_TEXT_MAP, IngredientId} from "../../../utils/constants";
 import Modal from "../../modal/modal/modal";
@@ -10,7 +10,7 @@ import {useSelector} from "react-redux";
 import {RootState, useAppDispatch} from "../../../services/store";
 import {deselect, select} from "../../../services/ingredientDetailsSlice";
 
-interface BurgerIngredientsCardProps {
+export interface BurgerIngredientsCardProps {
     ingredient: Ingredient;
 }
 
@@ -31,7 +31,10 @@ const BurgerIngredientsCard = ({ingredient}: BurgerIngredientsCardProps) => {
     };
     
     return (
-        <div className={`${styles.main_container} ml-4 mt-4`} onClick={handleOpenModal}>
+        <div
+            className={`${styles.main_container} ml-4 mt-4`}
+            onClick={handleOpenModal}
+        >
             <div className={styles.main_icon}>
                 <img
                     src={ingredient.image}

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from './ingredient-details.module.css';
-import Ingredient from "../../../utils/ingredient";
+import {Ingredient} from "../../../utils/ingredient";
 import NutritionCard from "../nutrition-card/nutrition-card";
 import {IMAGE_ALT_TEXT_MAP, IngredientId} from "../../../utils/constants";
 

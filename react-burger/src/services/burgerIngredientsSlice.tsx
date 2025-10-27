@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import Ingredient from "../utils/ingredient";
+import {Ingredient} from "../utils/ingredient";
 import {GET_INGREDIENTS_URL} from "../utils/constants";
 
 interface BurgerIngredientsState {

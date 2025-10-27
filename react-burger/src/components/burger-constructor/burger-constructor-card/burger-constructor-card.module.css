@@ -1,6 +1,13 @@
 .container {
     width: 568px;
     height: 80px;
+    /*transition: all 0.2s ease;*/
+}
+
+.container.dragging {
+    opacity: 0.5;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(100, 108, 255, 0.7);
 }
 
 .card {
