@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {Ingredient} from "../utils/ingredient";
-import {GET_INGREDIENTS_URL} from "../utils/constants";
+import {request} from "../utils/request";
 
 interface BurgerIngredientsState {
     items: Ingredient[],
@@ -20,19 +20,7 @@ export const fetchIngredients = createAsyncThunk<Ingredient[], void, { rejectVal
     'burgerIngredients/fetchIngredients',
     async (_, thunkAPI) => {
         try {
-            const response = await fetch(GET_INGREDIENTS_URL);
-
-            if (!response.ok) {
-                throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
-            }
-
-            const responseJson = await response.json();
-
-            if (!responseJson.success) {
-                throw new Error("Сервер вернул ошибку: success = false");
-            }
-
-            return responseJson.data;
+            return (await request('ingredients')).data;
         } catch (error: any) {
             const message = error.message || 'Неизвестная ошибка при загрузке ингредиентов';
             return thunkAPI.rejectWithValue(message);

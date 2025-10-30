@@ -1,6 +1,6 @@
 import React from "react";
 import styles from './burger-ingredients-card.module.css';
-import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Ingredient} from "../../../utils/ingredient";
 import IngredientDetails from "../../modal/ingredient-details/ingredient-details";
 import {IMAGE_ALT_TEXT_MAP, IngredientId} from "../../../utils/constants";
@@ -12,9 +12,10 @@ import {deselect, select} from "../../../services/ingredientDetailsSlice";
 
 export interface BurgerIngredientsCardProps {
     ingredient: Ingredient;
+    quantityAdded: number
 }
 
-const BurgerIngredientsCard = ({ingredient}: BurgerIngredientsCardProps) => {
+const BurgerIngredientsCard = ({ingredient, quantityAdded}: BurgerIngredientsCardProps) => {
 
     const {isModalOpened, openModal, closeModal} = useModal();
     const {ingredientDetails: selectedIngredient} = useSelector((state: RootState) => state.ingredientDetails);
@@ -35,6 +36,12 @@ const BurgerIngredientsCard = ({ingredient}: BurgerIngredientsCardProps) => {
             className={`${styles.main_container} ml-4 mt-4`}
             onClick={handleOpenModal}
         >
+            {quantityAdded ? (
+                <div className={styles.counter}>
+                    <Counter count={quantityAdded} size={'default'}></Counter>
+                </div>
+            ) : undefined}
+            
             <div className={styles.main_icon}>
                 <img
                     src={ingredient.image}

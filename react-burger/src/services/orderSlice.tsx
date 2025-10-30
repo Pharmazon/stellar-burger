@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {BurgerConstructorIngredient} from "../utils/ingredient";
-import {CREATE_ORDER_URL} from "../utils/constants";
+import {request} from "../utils/request";
 
 export interface Order {
     name: string;
@@ -24,27 +24,14 @@ const initialState: OrderState = {
 export const createOrderRequest = createAsyncThunk<Order, BurgerConstructorIngredient[], { rejectValue: string }>(
     'order/createOrderRequest',
     async (itemsToOrder, thunkAPI) => {
-
         try {
-            const response = await fetch(CREATE_ORDER_URL, {
+            return await request('orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ingredients: itemsToOrder.map(item => item.item._id)}),
+                body: JSON.stringify({ingredients: itemsToOrder.map(item => item.item._id)})
             });
-
-            if (!response.ok) {
-                throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
-            }
-
-            const responseJson = await response.json();
-
-            if (!responseJson.success) {
-                throw new Error("Сервер вернул ошибку: success = false");
-            }
-
-            return responseJson;
         } catch (error: any) {
             const message = error.message || 'Неизвестная ошибка при создании заказа';
             return thunkAPI.rejectWithValue(message);

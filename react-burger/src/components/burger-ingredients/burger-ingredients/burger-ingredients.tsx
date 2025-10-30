@@ -11,10 +11,19 @@ import DraggableBurgerBun from "../burger-ingredients-card/draggable-burger-bun"
 
 type IngredientSection = 'bun' | 'sauce' | 'main';
 
+type CounterItem = {
+    id: string;
+    quantity: number;
+};
+
 const BurgerIngredients = () => {
 
     const [currentTab, setCurrentTab] = useState(BUN_TYPE);
     const {items: ingredients, status, error} = useSelector((state: RootState) => state.burgerIngredients);
+    const {
+        ingredients: constructorIngredients,
+        selectedBun: constructorBun
+    } = useSelector((state: RootState) => state.burgerConstructor);
     const dispatch = useAppDispatch();
     
     const bunRef = useRef<HTMLDivElement>(null);
@@ -33,9 +42,6 @@ const BurgerIngredients = () => {
         }
 
         const handleScroll = () => {
-
-            console.log("RERENDERED!");
-
             const sections = [
                 {type: BUN_TYPE, domRect: bunRef.current?.getBoundingClientRect()},
                 {type: SAUCE_TYPE, domRect: sauceRef.current?.getBoundingClientRect()},
@@ -74,15 +80,15 @@ const BurgerIngredients = () => {
     });
 
     const bunIngredients = useMemo(() => {
-        return ingredients.filter(ingredient => BUN_TYPE === ingredient.type);
+        return ingredients.filter((ingredient) => BUN_TYPE === ingredient.type);
     }, [ingredients]);
 
     const sauceIngredients = useMemo(() => {
-        return ingredients.filter(ingredient => SAUCE_TYPE === ingredient.type);
+        return ingredients.filter((ingredient) => SAUCE_TYPE === ingredient.type);
     }, [ingredients]);
 
     const mainIngredients = useMemo(() => {
-        return ingredients.filter(ingredient => MAIN_TYPE === ingredient.type);
+        return ingredients.filter((ingredient) => MAIN_TYPE === ingredient.type);
     }, [ingredients]);
 
     const getRef = (section: IngredientSection) => {
@@ -121,6 +127,32 @@ const BurgerIngredients = () => {
         }
     }
 
+    const counterArray = useMemo(() => {
+        const result: CounterItem[] = [];
+
+        constructorIngredients?.forEach((ingredient) => {
+            const id = ingredient.item._id;
+
+            const elementInResult = result.find(
+                (counterItem) => counterItem.id === id
+            );
+
+            if (elementInResult) {
+                elementInResult.quantity += 1;
+            } else {
+                result.push({id: id, quantity: 1});
+            }
+        });
+
+        constructorBun && result.push({id: constructorBun._id, quantity: 1});
+
+        return result;
+    }, [constructorIngredients, constructorBun]);
+
+    const getQuantityById = (id: string): number => {
+        return counterArray.find((item) => item.id === id)?.quantity ?? 0;
+    };
+
     const renderBunSection = () => {
         const ref = getRef(BUN_TYPE);
         const buns = getByType(BUN_TYPE)
@@ -133,6 +165,7 @@ const BurgerIngredients = () => {
                             <DraggableBurgerBun
                                 key={ingredient._id}
                                 ingredient={ingredient}
+                                quantityAdded={getQuantityById(ingredient._id)}
                             />
                         ))}
                     </div>
@@ -153,6 +186,7 @@ const BurgerIngredients = () => {
                             <DraggableBurgerIngredient
                                 key={ingredient._id}
                                 ingredient={ingredient}
+                                quantityAdded={getQuantityById(ingredient._id)}
                             />
                         ))}
                     </div>

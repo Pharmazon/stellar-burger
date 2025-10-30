@@ -1,5 +1,4 @@
-export const GET_INGREDIENTS_URL = "https://norma.education-services.ru/api/ingredients";
-export const CREATE_ORDER_URL = "https://norma.education-services.ru/api/orders";
+export const BASE_URL = "https://norma.education-services.ru/api/";
 
 export const BUN_TYPE = 'bun';
 export const SAUCE_TYPE = 'sauce';

@@ -127,7 +127,11 @@ const BurgerConstructor = () => {
                         borderRadius: '10px',
                     }}
                 >
-                    {renderTopBunCard()}
+                    {
+                        selectedBun
+                            ? renderTopBunCard()
+                            : 'Перетащите сюда выбранную БУЛОЧКУ'
+                    }
                 </div>
                 <div
                     ref={dropIngredient as any}
@@ -142,7 +146,11 @@ const BurgerConstructor = () => {
                         borderRadius: '10px',
                     }}
                 >
-                    {renderIngredientCards()}
+                    {
+                        ingredients.length > 0
+                            ? renderIngredientCards()
+                            : 'Перетащите сюда выбранные ИНГРЕДИЕНТЫ'
+                    }
                 </div>
                 <div
                     ref={dropBottomBun as any}
@@ -157,7 +165,11 @@ const BurgerConstructor = () => {
                         borderRadius: '10px',
                     }}
                 >
-                    {renderBottomBunCard()}
+                    {
+                        selectedBun
+                            ? renderBottomBunCard()
+                            : 'Перетащите сюда выбранную БУЛОЧКУ'
+                    }
                 </div>
             </div>
             {calculateTotal > 0 && (

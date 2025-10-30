@@ -3,7 +3,7 @@ import {useDrag} from "react-dnd";
 import React from "react";
 import {DND_BURGER_BUN} from "../../../utils/constants";
 
-const DraggableBurgerBun = ({ingredient}: BurgerIngredientsCardProps) => {
+const DraggableBurgerBun = ({ingredient, quantityAdded}: BurgerIngredientsCardProps) => {
 
     const [{isDragging}, drag] = useDrag(() => ({
         type: DND_BURGER_BUN,
@@ -17,7 +17,10 @@ const DraggableBurgerBun = ({ingredient}: BurgerIngredientsCardProps) => {
 
     return (
         <div ref={drag as any} style={{opacity: isDragging ? 0.5 : 1}}>
-            <BurgerIngredientsCard ingredient={ingredient}/>
+            <BurgerIngredientsCard
+                ingredient={ingredient}
+                quantityAdded={quantityAdded}
+            />
         </div>
     );
 };

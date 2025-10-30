@@ -8,6 +8,7 @@ import {RootState, useAppDispatch} from "../../../services/store";
 import {useSelector} from "react-redux";
 import {createOrderRequest} from "../../../services/orderSlice";
 import {BurgerConstructorIngredient} from "../../../utils/ingredient";
+import {clear} from "../../../services/burgerConstructorSlice";
 
 interface BurgerConstructorTotalCardProps {
     total: number;
@@ -24,6 +25,11 @@ const BurgerConstructorTotalCard = ({total, itemsToOrder}: BurgerConstructorTota
         await dispatch(createOrderRequest(itemsToOrder));
         openModal();
     };
+
+    const closeModalWithClear = () => {
+        dispatch(clear());
+        closeModal();
+    }
     
     return (
         <div className={`${styles.total_container} ml-4 mt-10`}>
@@ -46,7 +52,7 @@ const BurgerConstructorTotalCard = ({total, itemsToOrder}: BurgerConstructorTota
 
             {order && isModalOpened && (
                 <Modal
-                    onClose={closeModal}
+                    onClose={closeModalWithClear}
                     width={720}
                     height={718}
                 >
