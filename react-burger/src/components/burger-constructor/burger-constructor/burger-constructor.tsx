@@ -1,7 +1,6 @@
 import React, {useMemo} from "react";
 import styles from './burger-constructor.module.css';
 import BurgerConstructorTotalCard from "../burger-constructor-total-card/burger-constructor-total-card";
-import {Ingredient} from "../../../utils/ingredient";
 import {
     BOTTOM_POSITION,
     BUN_TYPE,
@@ -10,15 +9,15 @@ import {
     DND_BURGER_INGREDIENT,
     TOP_POSITION
 } from "../../../utils/constants";
-import {useSelector} from "react-redux";
-import {RootState, useAppDispatch} from "../../../services/store";
+import {useAppDispatch, useAppSelector} from "../../../services/store";
 import {useDrop} from "react-dnd";
-import {addBun, addIngredient, moveIngredient} from "../../../services/burgerConstructorSlice";
+import {addBun, addIngredient, moveIngredient} from "../../../services/burger-constructor-slice";
 import DraggableBurgerConstructorCard from "../burger-constructor-card/draggable-burger-constructor-card";
+import {Ingredient} from "../../../types/ingredient";
 
 const BurgerConstructor = () => {
 
-    const {ingredients, selectedBun} = useSelector((state: RootState) => state.burgerConstructor);
+    const {ingredients, selectedBun} = useAppSelector((state) => state.burgerConstructor);
     const dispatch = useAppDispatch();
     const numRef = React.useRef(0);
 

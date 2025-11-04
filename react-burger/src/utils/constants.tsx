@@ -31,3 +31,12 @@ export const IMAGE_ALT_TEXT_MAP = {
     "643d69a5c3f7b9001cfa0949": "Листья светящегося салата",
     "643d69a5c3f7b9001cfa094a": "Желтый сыр пластинками с плесенью в виде астероидов",
 }
+
+export const HOME_PATH = '/';
+export const LOGIN_PATH = '/login';
+export const REGISTER_PATH = '/register';
+export const FORGOT_PASSWORD_PATH = '/forgot-password';
+export const RESET_PASSWORD_PATH = '/reset-password';
+export const PROFILE_PATH = '/profile';
+export const INGREDIENT_PATH = '/ingredients/:id';
+export const LOGOUT_PATH = '/logout';

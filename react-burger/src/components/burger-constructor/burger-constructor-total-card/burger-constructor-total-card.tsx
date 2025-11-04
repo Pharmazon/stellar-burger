@@ -4,11 +4,10 @@ import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-comp
 import OrderDetails from "../../modal/order-details/order-details";
 import Modal from "../../modal/modal/modal";
 import {useModal} from "../../../hooks/useModal";
-import {RootState, useAppDispatch} from "../../../services/store";
-import {useSelector} from "react-redux";
-import {createOrderRequest} from "../../../services/orderSlice";
-import {BurgerConstructorIngredient} from "../../../utils/ingredient";
-import {clear} from "../../../services/burgerConstructorSlice";
+import {useAppDispatch, useAppSelector} from "../../../services/store";
+import {createOrder} from "../../../services/order-slice";
+import {clear} from "../../../services/burger-constructor-slice";
+import {BurgerConstructorIngredient} from "../../../types/ingredient";
 
 interface BurgerConstructorTotalCardProps {
     total: number;
@@ -19,10 +18,10 @@ const BurgerConstructorTotalCard = ({total, itemsToOrder}: BurgerConstructorTota
 
     const {isModalOpened, openModal, closeModal} = useModal();
     const dispatch = useAppDispatch();
-    const {order, status} = useSelector((state: RootState) => state.order);
+    const {order, status} = useAppSelector((state) => state.order);
 
     const handleClick = async () => {
-        await dispatch(createOrderRequest(itemsToOrder));
+        await dispatch(createOrder({ingredients: itemsToOrder.map(item => item.item._id)}));
         openModal();
     };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from './order-details.module.css';
-import orderSuccessIcon from "../../../images/order-success.png";
+import orderSuccessIcon from "../../../assets/order-success.png";
 
 interface OrderDetailsProps {
     orderId: number

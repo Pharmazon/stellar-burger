@@ -1,37 +1,25 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {BurgerConstructorIngredient} from "../utils/ingredient";
-import {request} from "../utils/request";
-
-export interface Order {
-    name: string;
-    order: {
-        number: number;
-    };
-}
+import {performPostRequest} from "../utils/request";
+import {Order, OrderResponse} from "../types/orderResponse";
+import {OrderRequest} from "../types/orderRequest";
 
 interface OrderState {
-    order: Order['order'] | null;
-    status: 'idle' | 'loading' | 'success' | 'fail';
+    order: Order | null;
+    status: 'init' | 'loading' | 'success' | 'fail';
     error: string | null;
 }
 
 const initialState: OrderState = {
     order: null,
-    status: 'idle',
+    status: 'init',
     error: null,
 };
 
-export const createOrderRequest = createAsyncThunk<Order, BurgerConstructorIngredient[], { rejectValue: string }>(
-    'order/createOrderRequest',
+export const createOrder = createAsyncThunk<OrderResponse, OrderRequest>(
+    'order/create',
     async (itemsToOrder, thunkAPI) => {
         try {
-            return await request('orders', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ingredients: itemsToOrder.map(item => item.item._id)})
-            });
+            return await performPostRequest('orders', itemsToOrder) as OrderResponse;
         } catch (error: any) {
             const message = error.message || 'Неизвестная ошибка при создании заказа';
             return thunkAPI.rejectWithValue(message);
@@ -45,16 +33,16 @@ const orderSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(createOrderRequest.pending, (state) => {
+            .addCase(createOrder.pending, (state) => {
                 state.error = null;
                 state.status = 'loading';
             })
-            .addCase(createOrderRequest.fulfilled, (state, action) => {
+            .addCase(createOrder.fulfilled, (state, action) => {
                 state.error = null;
                 state.status = 'success';
                 state.order = action.payload.order;
             })
-            .addCase(createOrderRequest.rejected, (state, action) => {
+            .addCase(createOrder.rejected, (state, action) => {
                 state.error = `Ошибка создания заказа: ${action.payload}`;
                 state.status = 'fail';
             });

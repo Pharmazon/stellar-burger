@@ -1,26 +1,34 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {Ingredient} from "../utils/ingredient";
-import {request} from "../utils/request";
+import {IngredientResponse} from "../types/ingredientResponse";
+import {performGetRequest} from "../utils/request";
+import {Ingredient} from "../types/ingredient";
+import {RootState} from "./store";
 
 interface BurgerIngredientsState {
     items: Ingredient[],
     selectedIngredient: Ingredient | null,
-    status: 'idle' | 'loading' | 'success' | 'fail'
+    status: 'init' | 'loading' | 'success' | 'fail'
     error: string | null,
 }
 
 const initialState: BurgerIngredientsState = {
     items: [],
     selectedIngredient: null,
-    status: 'idle',
-    error: null,
+    status: 'init',
+    error: null
 }
 
-export const fetchIngredients = createAsyncThunk<Ingredient[], void, { rejectValue: string }>(
-    'burgerIngredients/fetchIngredients',
+export const fetchIngredients = createAsyncThunk<IngredientResponse, void, { state: RootState }>(
+    'ingredients/fetch',
     async (_, thunkAPI) => {
         try {
-            return (await request('ingredients')).data;
+            const {status, items} = thunkAPI.getState().burgerIngredients;
+            // Если уже загружено — не делаем запрос
+            if (status === 'success' && items.length > 0) {
+                return thunkAPI.rejectWithValue('Ингредиенты уже были загружены ранее');
+            }
+            
+            return (await performGetRequest('ingredients')) as IngredientResponse;
         } catch (error: any) {
             const message = error.message || 'Неизвестная ошибка при загрузке ингредиентов';
             return thunkAPI.rejectWithValue(message);
@@ -40,12 +48,12 @@ const burgerIngredientsSlice = createSlice({
             })
             .addCase(fetchIngredients.fulfilled, (state, action) => {
                 state.status = 'success';
-                state.items = action.payload;
+                state.items = action.payload.data;
                 state.error = null;
             })
             .addCase(fetchIngredients.rejected, (state, action) => {
                 state.status = 'fail';
-                state.error = action.payload || 'Неизвестная ошибка';
+                state.error = action.payload as string || 'Неизвестная ошибка';
                 state.items = [];
             });
     },
