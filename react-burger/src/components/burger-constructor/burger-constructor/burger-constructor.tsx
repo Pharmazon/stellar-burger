@@ -21,6 +21,8 @@ const BurgerConstructor = () => {
     const dispatch = useAppDispatch();
     const numRef = React.useRef(0);
 
+    const allRequiredSelected = () => ingredients.length > 0 && selectedBun !== null;
+
     const calculateTotal = useMemo(() => {
         return ingredients.reduce((total, ingredient) => {
             return total + (ingredient.item.price || 0);
@@ -171,12 +173,14 @@ const BurgerConstructor = () => {
                     }
                 </div>
             </div>
-            {calculateTotal > 0 && (
-                <BurgerConstructorTotalCard
-                    total={calculateTotal}
-                    itemsToOrder={ingredients}
-                />
-            )}
+            {
+                allRequiredSelected() && (
+                    <BurgerConstructorTotalCard
+                        total={calculateTotal}
+                        itemsToOrder={ingredients}
+                    />
+                )
+            }
         </div>
     );
 }

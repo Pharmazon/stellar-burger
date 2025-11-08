@@ -3,7 +3,7 @@ import styles from './burger-ingredients-card.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {IMAGE_ALT_TEXT_MAP, INGREDIENT_PATH, IngredientId} from "../../../utils/constants";
 import {Ingredient} from "../../../types/ingredient";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 export interface BurgerIngredientsCardProps {
     ingredient: Ingredient;
@@ -13,9 +13,10 @@ export interface BurgerIngredientsCardProps {
 const BurgerIngredientsCard = ({ingredient, quantityAdded}: BurgerIngredientsCardProps) => {
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleOnClick = () => {
-        navigate(INGREDIENT_PATH.replace(':id', ingredient._id) + '?openModal=true');
+        navigate(INGREDIENT_PATH.replace(':id', ingredient._id), {state: {background: location}});
     };
     
     return (

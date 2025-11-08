@@ -8,6 +8,8 @@ import {useAppDispatch, useAppSelector} from "../../../services/store";
 import {createOrder} from "../../../services/order-slice";
 import {clear} from "../../../services/burger-constructor-slice";
 import {BurgerConstructorIngredient} from "../../../types/ingredient";
+import {useNavigate} from "react-router-dom";
+import {LOGIN_PATH} from "../../../utils/constants";
 
 interface BurgerConstructorTotalCardProps {
     total: number;
@@ -18,10 +20,19 @@ const BurgerConstructorTotalCard = ({total, itemsToOrder}: BurgerConstructorTota
 
     const {isModalOpened, openModal, closeModal} = useModal();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const {order, status} = useAppSelector((state) => state.order);
+    const isUserLoggedIn = useAppSelector((store) => store.user.isLoggedIn);
 
     const handleClick = async () => {
-        await dispatch(createOrder({ingredients: itemsToOrder.map(item => item.item._id)}));
+        if (!isUserLoggedIn) {
+            navigate(LOGIN_PATH);
+            return;
+        }
+
+        await dispatch(createOrder({
+            ingredients: itemsToOrder.map(item => item.item._id)
+        }));
         openModal();
     };
 

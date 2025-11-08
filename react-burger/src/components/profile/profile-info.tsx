@@ -4,6 +4,7 @@ import {ChangeEvent, FormEvent, useState} from "react";
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {updateUserDetails} from "../../services/user-slice";
 import Preloader from "../preloader/preloader";
+import {useForm} from "../../hooks/useForm";
 
 const ProfileInfo = () => {
 
@@ -11,39 +12,43 @@ const ProfileInfo = () => {
     const user = useAppSelector((state) => state.user);
     const [anyInputChanged, setAnyInputChanged] = useState(false);
     const [nameInputDisabled, setNameInputDisabled] = useState(true);
-    const [name, setName] = useState(user.user?.name ?? '');
-    const [login, setLogin] = useState(user.user?.email ?? '');
-    const [password, setPassword] = useState('');
+    const {values, setValues} = useForm({
+        name: user.user?.name ?? '',
+        login: user.user?.email ?? '',
+        password: ''
+    });
 
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setAnyInputChanged(e.target.value !== user.user?.name);
-        setName(e.target.value);
+        setValues({...values, name: e.target.value});
     };
 
     const handleLoginChange = (e: ChangeEvent<HTMLInputElement>) => {
         setAnyInputChanged(e.target.value !== user.user?.email);
-        setLogin(e.target.value);
+        setValues({...values, login: e.target.value});
     };
 
     const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
         setAnyInputChanged(e.target.value !== '');
-        setPassword(e.target.value);
+        setValues({...values, password: e.target.value});
     };
 
     const handleFormSubmit = async (e: FormEvent) => {
         e.preventDefault();
         await dispatch(updateUserDetails({
-                email: login,
-                name: name,
-                password: password || undefined,
+            email: values.login,
+            name: values.name,
+            password: values.password
         }));
     };
 
     const onCancelClick = () => {
         setAnyInputChanged(false);
-        setName(user.user?.name ?? '');
-        setLogin(user.user?.email ?? '');
-        setPassword('');
+        setValues({
+            name: user.user?.name ?? '',
+            login: user.user?.email ?? '',
+            password: ''
+        })
     };
 
     if (user.status === 'loading') {
@@ -62,7 +67,7 @@ const ProfileInfo = () => {
                 type='text'
                 size='default'
                 placeholder='Имя'
-                value={name}
+                value={values.name}
                 onChange={handleNameChange}
                 disabled={nameInputDisabled}
                 onPointerEnterCapture={undefined}
@@ -72,12 +77,12 @@ const ProfileInfo = () => {
                 isIcon
                 size='default'
                 placeholder='Логин'
-                value={login}
+                value={values.login}
                 onChange={handleLoginChange}
             />
             <PasswordInput
                 size='default'
-                value={password}
+                value={values.password}
                 onChange={handlePasswordChange}
                 icon='EditIcon'
             />

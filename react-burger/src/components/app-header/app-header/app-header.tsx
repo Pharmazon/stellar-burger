@@ -20,24 +20,18 @@ const AppHeader = () => {
         <header className={styles.header}>
             <div className={styles.header_container}>
                 <div className={`${styles.left_group}`}>
-                    {
-                        user.isLoggedIn && (
-                            <>
-                                <Link to={HOME_PATH} className={styles.link}>
-                                    <AppHeaderCard
-                                        iconComponent={<BurgerIcon type={getIconType}/>}
-                                        text={'Конструктор'}
-                                    />
-                                </Link>
-                                <div className={'text_color_inactive'}>
-                                    <AppHeaderCard
-                                        iconComponent={<ListIcon type={getIconType}/>}
-                                        text={'Лента заказов'}
-                                    />
-                                </div>
-                            </>
-                        )
-                    }
+                    <Link to={HOME_PATH} className={styles.link}>
+                        <AppHeaderCard
+                            iconComponent={<BurgerIcon type={getIconType}/>}
+                            text={'Конструктор'}
+                        />
+                    </Link>
+                    <div className={'text_color_inactive'}>
+                        <AppHeaderCard
+                            iconComponent={<ListIcon type={getIconType}/>}
+                            text={'Лента заказов'}
+                        />
+                    </div>
                 </div>
 
                 <Link to={HOME_PATH} className={styles.link}>
@@ -45,16 +39,12 @@ const AppHeader = () => {
                 </Link>
 
                 <div className={styles.right_item}>
-                    {
-                        user.isLoggedIn && (
-                            <Link to={PROFILE_PATH} className={styles.link}>
-                                <AppHeaderCard
-                                    iconComponent={<ProfileIcon type={getIconType}/>}
-                                    text={'Личный кабинет'}
-                                />
-                            </Link>
-                        )
-                    }
+                    <Link to={PROFILE_PATH} className={styles.link}>
+                        <AppHeaderCard
+                            iconComponent={<ProfileIcon type={getIconType}/>}
+                            text={'Личный кабинет'}
+                        />
+                    </Link>
                 </div>
             </div>
         </header>

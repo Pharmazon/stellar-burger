@@ -1,26 +1,39 @@
 import {useAppSelector} from "../../services/store";
-import {LOGIN_PATH} from "../../utils/constants";
-import {Navigate} from 'react-router-dom';
+import {Navigate, useLocation} from 'react-router-dom';
 import {ReactElement} from "react";
 import Preloader from "../preloader/preloader";
+import {HOME_PATH, LOGIN_PATH} from "../../utils/constants";
 
 interface ProtectedRouteElementProps {
-    target: ReactElement
+    target: ReactElement,
+    anonymous?: boolean
 }
 
-const ProtectedRouteElement = ({target}: ProtectedRouteElementProps) => {
+const ProtectedRouteElement = ({target, anonymous = false}: ProtectedRouteElementProps) => {
 
-    const user = useAppSelector((state) => state.user);
+    const user = useAppSelector((store) => store.user);
+    const location = useLocation();
+
+    const from = location.state?.from || HOME_PATH;
 
     if ('loading' === user.status) {
         return <Preloader/>;
     }
 
-    if (!user.isLoggedIn) {
-        return <Navigate to={LOGIN_PATH} replace/>;
+    // Если не требуется авторизация, а пользователь авторизован...
+    if (anonymous && user.isLoggedIn) {
+        // ...то отправляем его на предыдущую страницу
+        return <Navigate to={from}/>;
     }
 
+    // Если требуется авторизация, а пользователь не авторизован...
+    if (!anonymous && !user.isLoggedIn) {
+        // ...то отправляем его на страницу логин
+        return <Navigate to={LOGIN_PATH} state={{from: location}}/>;
+    }
+
+    // Если все ок, то рендерим внутреннее содержимое
     return target;
-};
+}
 
 export default ProtectedRouteElement;
