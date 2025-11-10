@@ -1,14 +1,9 @@
 import React from "react";
 import styles from './burger-ingredients-card.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Ingredient} from "../../../utils/ingredient";
-import IngredientDetails from "../../modal/ingredient-details/ingredient-details";
-import {IMAGE_ALT_TEXT_MAP, IngredientId} from "../../../utils/constants";
-import Modal from "../../modal/modal/modal";
-import {useModal} from "../../../hooks/useModal";
-import {useSelector} from "react-redux";
-import {RootState, useAppDispatch} from "../../../services/store";
-import {deselect, select} from "../../../services/ingredientDetailsSlice";
+import {IMAGE_ALT_TEXT_MAP, INGREDIENT_PATH, IngredientId} from "../../../utils/constants";
+import {Ingredient} from "../../../types/ingredient";
+import {useLocation, useNavigate} from "react-router-dom";
 
 export interface BurgerIngredientsCardProps {
     ingredient: Ingredient;
@@ -17,24 +12,17 @@ export interface BurgerIngredientsCardProps {
 
 const BurgerIngredientsCard = ({ingredient, quantityAdded}: BurgerIngredientsCardProps) => {
 
-    const {isModalOpened, openModal, closeModal} = useModal();
-    const {ingredientDetails: selectedIngredient} = useSelector((state: RootState) => state.ingredientDetails);
-    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    const handleOpenModal = () => {
-        dispatch(select(ingredient));
-        openModal();
-    };
-
-    const handleCloseModal = () => {
-        closeModal();
-        dispatch(deselect());
+    const handleOnClick = () => {
+        navigate(INGREDIENT_PATH.replace(':id', ingredient._id), {state: {background: location}});
     };
     
     return (
         <div
             className={`${styles.main_container} ml-4 mt-4`}
-            onClick={handleOpenModal}
+            onClick={handleOnClick}
         >
             {quantityAdded ? (
                 <div className={styles.counter}>
@@ -57,17 +45,6 @@ const BurgerIngredientsCard = ({ingredient, quantityAdded}: BurgerIngredientsCar
             </div>
              
             <span className={`${styles.description} text text_type_main-small`}>{ingredient.name}</span>
-
-            {selectedIngredient && isModalOpened && (
-                <Modal
-                    title={"Детали ингредиента"}
-                    onClose={handleCloseModal}
-                    width={720}
-                    height={539}
-                >
-                    <IngredientDetails ingredient={selectedIngredient}/>
-                </Modal>
-            )}
         </div>
     );
 }

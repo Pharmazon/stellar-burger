@@ -1,13 +1,12 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import styles from './burger-ingredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Ingredient} from "../../../utils/ingredient";
 import {BUN_TYPE, MAIN_TYPE, SAUCE_TYPE} from "../../../utils/constants";
-import {fetchIngredients} from "../../../services/burgerIngredientsSlice";
-import {useSelector} from "react-redux";
-import {RootState, useAppDispatch} from "../../../services/store";
+import {useAppSelector} from "../../../services/store";
 import DraggableBurgerIngredient from "../burger-ingredients-card/draggable-burger-ingredient";
 import DraggableBurgerBun from "../burger-ingredients-card/draggable-burger-bun";
+import {Ingredient} from "../../../types/ingredient";
+import Preloader from "../../preloader/preloader";
 
 type IngredientSection = 'bun' | 'sauce' | 'main';
 
@@ -19,21 +18,16 @@ type CounterItem = {
 const BurgerIngredients = () => {
 
     const [currentTab, setCurrentTab] = useState(BUN_TYPE);
-    const {items: ingredients, status, error} = useSelector((state: RootState) => state.burgerIngredients);
+    const {items: ingredients, status, error} = useAppSelector((state) => state.burgerIngredients);
     const {
         ingredients: constructorIngredients,
         selectedBun: constructorBun
-    } = useSelector((state: RootState) => state.burgerConstructor);
-    const dispatch = useAppDispatch();
+    } = useAppSelector((state) => state.burgerConstructor);
     
     const bunRef = useRef<HTMLDivElement>(null);
     const sauceRef = useRef<HTMLDivElement>(null);
     const mainRef = useRef<HTMLDivElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        dispatch(fetchIngredients());
-    }, [dispatch]);
 
     useEffect(() => {
         const container = scrollContainerRef.current;
@@ -229,7 +223,7 @@ const BurgerIngredients = () => {
             </div>
 
             {'loading' === status &&
-                <div className={styles.components_container}>Получение списка ингредиентов...</div>
+                <Preloader/>
             }
 
             {'fail' === status &&

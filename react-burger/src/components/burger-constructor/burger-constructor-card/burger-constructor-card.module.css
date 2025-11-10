@@ -1,7 +1,6 @@
 .container {
     width: 568px;
     height: 80px;
-    /*transition: all 0.2s ease;*/
 }
 
 .container.dragging {

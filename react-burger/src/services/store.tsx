@@ -1,11 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 
-import ingredientDetailsReducer from './ingredientDetailsSlice';
-import burgerConstructorReducer from './burgerConstructorSlice';
-import orderReducer from './orderSlice';
-import burgerIngredientsReducer from './burgerIngredientsSlice';
-import {useDispatch} from "react-redux";
+import ingredientDetailsReducer from './ingredient-details-slice';
+import burgerConstructorReducer from './burger-constructor-slice';
+import userReducer from './user-slice';
+import orderReducer from './order-slice';
+import burgerIngredientsReducer from './burger-ingredients-slice';
+import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
         ingredientDetails: ingredientDetailsReducer,
         burgerConstructor: burgerConstructorReducer,
         order: orderReducer,
+        user: userReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
@@ -25,3 +27,4 @@ export type RootState = ReturnType<typeof store.getState>;
 
 export const useAppDispatch = () =>
     useDispatch<typeof store.dispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

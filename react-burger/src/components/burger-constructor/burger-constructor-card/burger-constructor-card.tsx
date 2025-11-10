@@ -2,9 +2,9 @@ import React from "react";
 import styles from './burger-constructor-card.module.css';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useAppDispatch} from "../../../services/store";
-import {removeIngredient} from "../../../services/burgerConstructorSlice";
-import {Ingredient} from "../../../utils/ingredient";
+import {removeIngredient} from "../../../services/burger-constructor-slice";
 import {BOTTOM_POSITION, BUN_TYPE, CardPosition, TOP_POSITION} from "../../../utils/constants";
+import {Ingredient} from "../../../types/ingredient";
 
 export interface BurgerConstructorCardProps {
     name: string

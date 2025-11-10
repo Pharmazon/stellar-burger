@@ -1,20 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, {StrictMode} from 'react';
+import {createRoot} from 'react-dom/client';
 import './index.css';
 import App from './app';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import {store} from "./services/store";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
+    // В StrictMode реакт может вызывать некоторые эффекты не нескольку раз
+    <StrictMode>
       <Provider store={store}>
           <App/>
       </Provider>
-  </React.StrictMode>
+    </StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,23 +1,26 @@
-import React from 'react';
-import AppHeader from "./components/app-header/app-header/app-header";
-import BurgerIngredients from "./components/burger-ingredients/burger-ingredients/burger-ingredients";
-import BurgerConstructor from "./components/burger-constructor/burger-constructor/burger-constructor";
-import styles from "./app.module.css";
+import React, {useEffect} from 'react';
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from 'react-dnd-html5-backend';
+import {BrowserRouter} from 'react-router-dom';
+import {fetchIngredients} from "./services/burger-ingredients-slice";
+import {useAppDispatch} from "./services/store";
+import AppHeader from "./components/app-header/app-header/app-header";
+import AppContent from "./components/app-content/app-content";
 
 const App = () => {
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(fetchIngredients());
+    }, [dispatch]);
+    
     return (
         <DndProvider backend={HTML5Backend}>
-            <div>
+            <BrowserRouter>
                 <AppHeader/>
-                <main className={styles.body}>
-                    <div className={styles.body_container}>
-                        <BurgerIngredients/>
-                        <BurgerConstructor/>
-                    </div>
-                </main>
-            </div>
+                <AppContent/>
+            </BrowserRouter>
         </DndProvider>
     );
 }
