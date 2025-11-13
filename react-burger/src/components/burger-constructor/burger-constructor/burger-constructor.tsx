@@ -2,18 +2,17 @@ import React, {useMemo} from "react";
 import styles from './burger-constructor.module.css';
 import BurgerConstructorTotalCard from "../burger-constructor-total-card/burger-constructor-total-card";
 import {
-    BOTTOM_POSITION,
-    BUN_TYPE,
     CardPosition,
     DND_BURGER_BUN,
     DND_BURGER_INGREDIENT,
-    TOP_POSITION
+    IngredientSection,
+    TNullableCardPosition
 } from "../../../utils/constants";
 import {useAppDispatch, useAppSelector} from "../../../services/store";
 import {useDrop} from "react-dnd";
 import {addBun, addIngredient, moveIngredient} from "../../../services/burger-constructor-slice";
 import DraggableBurgerConstructorCard from "../burger-constructor-card/draggable-burger-constructor-card";
-import {Ingredient} from "../../../types/ingredient";
+import {IIngredient} from "../../../types/ingredient";
 
 const BurgerConstructor = () => {
 
@@ -30,8 +29,8 @@ const BurgerConstructor = () => {
     }, [ingredients, selectedBun]);
 
     const renderIngredientCard = (
-        ingredient: Ingredient | null,
-        position: CardPosition,
+        ingredient: IIngredient | null,
+        position: TNullableCardPosition,
         num: number | null,
         index: number
     ) => {
@@ -41,9 +40,9 @@ const BurgerConstructor = () => {
 
         let suffix = '';
         let type = undefined;
-        if (ingredient.type === BUN_TYPE) {
+        if (ingredient.type === IngredientSection.BUN) {
             type = position === null ? undefined : position;
-            suffix = position === TOP_POSITION ? ' (верх)' : ' (низ)';
+            suffix = position === CardPosition.TOP ? ' (верх)' : ' (низ)';
         }
 
         return (
@@ -62,11 +61,11 @@ const BurgerConstructor = () => {
     }
 
     const renderTopBunCard = () => {
-        return renderIngredientCard(selectedBun, TOP_POSITION, null, -1);
+        return renderIngredientCard(selectedBun, CardPosition.TOP, null, -1);
     }
 
     const renderBottomBunCard = () => {
-        return renderIngredientCard(selectedBun, BOTTOM_POSITION, null, -2);
+        return renderIngredientCard(selectedBun, CardPosition.BOTTOM, null, -2);
     }
 
     const renderIngredientCards = () => {
@@ -81,7 +80,7 @@ const BurgerConstructor = () => {
 
     const [{canIngredientDrop, isOverIngredient}, dropIngredient] = useDrop({
         accept: DND_BURGER_INGREDIENT,
-        drop: (item: { ingredient: Ingredient }) => {
+        drop: (item: { ingredient: IIngredient }) => {
             dispatch(addIngredient({num: ++numRef.current, item: item.ingredient}));
         },
         collect: (monitor) => ({
@@ -92,7 +91,7 @@ const BurgerConstructor = () => {
 
     const [{canDropTopBun, isOverTopBun}, dropTopBun] = useDrop({
         accept: DND_BURGER_BUN,
-        drop: (item: { ingredient: Ingredient }) => {
+        drop: (item: { ingredient: IIngredient }) => {
             dispatch(addBun(item.ingredient));
         },
         collect: (monitor) => ({
@@ -103,7 +102,7 @@ const BurgerConstructor = () => {
 
     const [{canDropBottomBun, isOverBottomBun}, dropBottomBun] = useDrop({
         accept: DND_BURGER_BUN,
-        drop: (item: { ingredient: Ingredient }) => {
+        drop: (item: { ingredient: IIngredient }) => {
             dispatch(addBun(item.ingredient));
         },
         collect: (monitor) => ({

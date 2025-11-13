@@ -1,16 +1,16 @@
 import React from "react";
 import styles from './burger-ingredients-card.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {IMAGE_ALT_TEXT_MAP, INGREDIENT_PATH, IngredientId} from "../../../utils/constants";
-import {Ingredient} from "../../../types/ingredient";
+import {IMAGE_ALT_TEXT_MAP, INGREDIENT_PATH, TIngredientId} from "../../../utils/constants";
+import {IIngredient} from "../../../types/ingredient";
 import {useLocation, useNavigate} from "react-router-dom";
 
-export interface BurgerIngredientsCardProps {
-    ingredient: Ingredient;
+export interface IBurgerIngredientsCardProps {
+    ingredient: IIngredient;
     quantityAdded: number
 }
 
-const BurgerIngredientsCard = ({ingredient, quantityAdded}: BurgerIngredientsCardProps) => {
+const BurgerIngredientsCard = ({ingredient, quantityAdded}: IBurgerIngredientsCardProps) => {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -33,7 +33,7 @@ const BurgerIngredientsCard = ({ingredient, quantityAdded}: BurgerIngredientsCar
             <div className={styles.main_icon}>
                 <img
                     src={ingredient.image}
-                    alt={IMAGE_ALT_TEXT_MAP[ingredient._id as IngredientId] || ingredient.name}
+                    alt={IMAGE_ALT_TEXT_MAP[ingredient._id as TIngredientId] || ingredient.name}
                 />
             </div>
             

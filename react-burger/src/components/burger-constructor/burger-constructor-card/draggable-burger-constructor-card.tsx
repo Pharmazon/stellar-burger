@@ -2,14 +2,14 @@ import React, {useRef} from "react";
 import {DND_BURGER_CARD} from "../../../utils/constants";
 import {useDrag, useDrop} from "react-dnd";
 import styles from './burger-constructor-card.module.css';
-import BurgerConstructorCard, {BurgerConstructorCardProps} from "./burger-constructor-card";
+import BurgerConstructorCard, {IBurgerConstructorCardProps} from "./burger-constructor-card";
 
-interface DraggableBurgerConstructorCardProps extends BurgerConstructorCardProps {
+interface IDraggableBurgerConstructorCardProps extends IBurgerConstructorCardProps {
     index: number;
     onMove: (fromIndex: number, toIndex: number) => void;
 }
 
-interface DragItem {
+interface IDragItem {
     index: number;
     id: string;
     type: string;
@@ -22,7 +22,7 @@ const DraggableBurgerConstructorCard = ({
                                             type,
                                             onMove,
                                             index
-                                        }: DraggableBurgerConstructorCardProps) => {
+                                        }: IDraggableBurgerConstructorCardProps) => {
 
     const ref = useRef<HTMLDivElement>(null);
 
@@ -40,7 +40,7 @@ const DraggableBurgerConstructorCard = ({
 
     const [, drop] = useDrop({
         accept: DND_BURGER_CARD,
-        hover(item: DragItem, monitor) {
+        hover(item: IDragItem, monitor) {
             if (!ref.current) {
                 return;
             }

@@ -1,6 +1,6 @@
-import {ApiResponse} from "./apiResponse";
-import {Ingredient} from "./ingredient";
+import {IApiResponse} from "./apiResponse";
+import {IIngredient} from "./ingredient";
 
-export interface IngredientResponse extends ApiResponse {
-    data: Ingredient[];
+export interface IIngredientResponse extends IApiResponse {
+    data: Array<IIngredient>;
 }

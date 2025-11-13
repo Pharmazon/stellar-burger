@@ -2,11 +2,11 @@ import React from "react";
 import styles from './order-details.module.css';
 import orderSuccessIcon from "../../../assets/order-success.png";
 
-interface OrderDetailsProps {
+interface IOrderDetailsProps {
     orderId: number
 }
 
-const OrderDetails = ({orderId}: OrderDetailsProps) => {
+const OrderDetails = ({orderId}: IOrderDetailsProps) => {
 
     return (
         <>

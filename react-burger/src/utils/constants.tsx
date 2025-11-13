@@ -1,18 +1,26 @@
 export const BASE_URL = "https://norma.education-services.ru/api/";
 
-export const BUN_TYPE = 'bun';
-export const SAUCE_TYPE = 'sauce';
-export const MAIN_TYPE = 'main';
+export enum IngredientSection {
+    BUN = 'bun',
+    SAUCE = 'sauce',
+    MAIN = 'main'
+}
+
+export enum CardPosition {
+    TOP = 'top',
+    BOTTOM = 'bottom'
+}
+
+export enum Status {
+    INIT = 'init',
+    LOADING = 'loading',
+    SUCCESS = 'success',
+    FAIL = 'fail'
+}
 
 export const DND_BURGER_INGREDIENT = 'DND_BURGER_INGREDIENT';
 export const DND_BURGER_BUN = 'DND_BURGER_BUN';
 export const DND_BURGER_CARD = 'DND_BURGER_CARD';
-
-export const TOP_POSITION = 'top';
-export const BOTTOM_POSITION = 'bottom';
-
-export type IngredientId = keyof typeof IMAGE_ALT_TEXT_MAP;
-export type CardPosition = 'top' | 'bottom' | null
 
 export const IMAGE_ALT_TEXT_MAP = {
     "643d69a5c3f7b9001cfa093c": "Светящаяся булочка с кратерами как на Луне",
@@ -42,3 +50,7 @@ export const PROFILE_ORDERS_PATH = '/profile/orders';
 export const INGREDIENT_PATH = '/ingredients/:id';
 export const LOGOUT_PATH = '/logout';
 export const ANY_PATH = '*';
+
+export type TIngredientId = keyof typeof IMAGE_ALT_TEXT_MAP;
+export type TNullableCardPosition = CardPosition | null;
+export type TNullableIngredientSection = IngredientSection | null;

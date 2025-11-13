@@ -1,8 +1,8 @@
-import {ApiResponse} from "./apiResponse";
-import {User} from "./user";
+import {IApiResponse} from "./apiResponse";
+import {IUser} from "./user";
 
-export interface UserResponse extends ApiResponse {
+export interface IUserResponse extends IApiResponse {
     accessToken?: string;
     refreshToken?: string;
-    user: User;
+    user: IUser;
 }

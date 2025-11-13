@@ -4,7 +4,7 @@ import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import {createPortal} from "react-dom";
 
-interface ModalProps {
+interface IModalProps {
     title?: string
     children: ReactNode
     width: number,
@@ -12,7 +12,7 @@ interface ModalProps {
     onClose: () => void
 }
 
-const Modal = ({width, height, children, title, onClose}: ModalProps) => {
+const Modal = ({width, height, children, title, onClose}: IModalProps) => {
 
     const [closeIconType, setCloseIconType] = useState<"primary" | "success">("primary");
 

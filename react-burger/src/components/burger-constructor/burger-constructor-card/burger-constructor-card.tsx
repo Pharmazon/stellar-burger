@@ -3,22 +3,22 @@ import styles from './burger-constructor-card.module.css';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useAppDispatch} from "../../../services/store";
 import {removeIngredient} from "../../../services/burger-constructor-slice";
-import {BOTTOM_POSITION, BUN_TYPE, CardPosition, TOP_POSITION} from "../../../utils/constants";
-import {Ingredient} from "../../../types/ingredient";
+import {CardPosition, IngredientSection, TNullableCardPosition} from "../../../utils/constants";
+import {IIngredient} from "../../../types/ingredient";
 
-export interface BurgerConstructorCardProps {
+export interface IBurgerConstructorCardProps {
     name: string
     num: number | null
-    ingredient: Ingredient
-    type?: CardPosition
+    ingredient: IIngredient
+    type?: TNullableCardPosition
 }
 
-const BurgerConstructorCard = ({name, num, ingredient, type}: BurgerConstructorCardProps) => {
+const BurgerConstructorCard = ({name, num, ingredient, type}: IBurgerConstructorCardProps) => {
 
     const dispatch = useAppDispatch();
 
-    const showDragIcon = BUN_TYPE !== ingredient.type;
-    const isLocked = BUN_TYPE === ingredient.type;
+    const showDragIcon = IngredientSection.BUN !== ingredient.type;
+    const isLocked = IngredientSection.BUN === ingredient.type;
 
     const handleClick = () => {
         if (num === null) {
@@ -27,13 +27,13 @@ const BurgerConstructorCard = ({name, num, ingredient, type}: BurgerConstructorC
         dispatch(removeIngredient(num));
     };
 
-    const constructorElementType = TOP_POSITION === type
-        ? TOP_POSITION
-        : BOTTOM_POSITION === type
-            ? BOTTOM_POSITION
+    const constructorElementType = CardPosition.TOP === type
+        ? CardPosition.TOP
+        : CardPosition.BOTTOM === type
+            ? CardPosition.BOTTOM
             : undefined
 
-    const price = BUN_TYPE === ingredient.type
+    const price = IngredientSection.BUN === ingredient.type
         ? ingredient.price / 2
         : ingredient.price;
 

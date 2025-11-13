@@ -1,14 +1,14 @@
 import React from "react";
 import styles from './ingredient-details.module.css';
 import NutritionCard from "../nutrition-card/nutrition-card";
-import {IMAGE_ALT_TEXT_MAP, IngredientId} from "../../../utils/constants";
-import {Ingredient} from "../../../types/ingredient";
+import {IMAGE_ALT_TEXT_MAP, TIngredientId} from "../../../utils/constants";
+import {IIngredient} from "../../../types/ingredient";
 
-interface IngredientDetailsProps {
-    ingredient: Ingredient
+interface IIngredientDetailsProps {
+    ingredient: IIngredient
 }
 
-const IngredientDetails = ({ingredient}: IngredientDetailsProps) => {
+const IngredientDetails = ({ingredient}: IIngredientDetailsProps) => {
 
     return (
         <div className={`${styles.container} mb-15`}>
@@ -16,7 +16,7 @@ const IngredientDetails = ({ingredient}: IngredientDetailsProps) => {
                 <div className={`${styles.logo} mb-4`}>
                     <img
                         src={ingredient.image_large}
-                        alt={IMAGE_ALT_TEXT_MAP[ingredient._id as IngredientId] || ingredient.name}
+                        alt={IMAGE_ALT_TEXT_MAP[ingredient._id as TIngredientId] || ingredient.name}
                     />
                 </div>
             </div>

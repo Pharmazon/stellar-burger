@@ -1,6 +1,6 @@
-import {ApiResponse} from './apiResponse';
+import {IApiResponse} from './apiResponse';
 
-export interface TokenResponse extends ApiResponse {
+export interface ITokenResponse extends IApiResponse {
     accessToken: string;
     refreshToken: string;
 }

@@ -5,11 +5,11 @@ import {LOGIN_PATH, LOGOUT_PATH} from "../../utils/constants";
 import {logout} from "../../services/user-slice";
 import tokens from "../../utils/token";
 
-interface LogoutProps {
+interface ILogoutProps {
     children: ReactElement;
 }
 
-const Logout = ({children}: LogoutProps) => {
+const Logout = ({children}: ILogoutProps) => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();

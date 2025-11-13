@@ -1,24 +1,25 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {IngredientResponse} from "../types/ingredientResponse";
+import {IIngredientResponse} from "../types/ingredientResponse";
 import {performGetRequest} from "../utils/request";
-import {Ingredient} from "../types/ingredient";
-import {RootState} from "./store";
+import {IIngredient} from "../types/ingredient";
+import {TRootState} from "./store";
+import {Status} from "../utils/constants";
 
-interface BurgerIngredientsState {
-    items: Ingredient[],
-    selectedIngredient: Ingredient | null,
-    status: 'init' | 'loading' | 'success' | 'fail'
+interface IBurgerIngredientsState {
+    items: Array<IIngredient>,
+    selectedIngredient: IIngredient | null,
+    status: Status
     error: string | null,
 }
 
-const initialState: BurgerIngredientsState = {
+const initialState: IBurgerIngredientsState = {
     items: [],
     selectedIngredient: null,
-    status: 'init',
+    status: Status.INIT,
     error: null
 }
 
-export const fetchIngredients = createAsyncThunk<IngredientResponse, void, { state: RootState }>(
+export const fetchIngredients = createAsyncThunk<IIngredientResponse, void, { state: TRootState }>(
     'ingredients/fetch',
     async (_, thunkAPI) => {
         try {
@@ -27,8 +28,8 @@ export const fetchIngredients = createAsyncThunk<IngredientResponse, void, { sta
             if (status === 'success' && items.length > 0) {
                 return thunkAPI.rejectWithValue('Ингредиенты уже были загружены ранее');
             }
-            
-            return (await performGetRequest('ingredients')) as IngredientResponse;
+
+            return (await performGetRequest('ingredients')) as IIngredientResponse;
         } catch (error: any) {
             const message = error.message || 'Неизвестная ошибка при загрузке ингредиентов';
             return thunkAPI.rejectWithValue(message);
@@ -43,16 +44,16 @@ const burgerIngredientsSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchIngredients.pending, (state) => {
-                state.status = 'loading';
+                state.status = Status.LOADING;
                 state.error = null;
             })
             .addCase(fetchIngredients.fulfilled, (state, action) => {
-                state.status = 'success';
+                state.status = Status.SUCCESS;
                 state.items = action.payload.data;
                 state.error = null;
             })
             .addCase(fetchIngredients.rejected, (state, action) => {
-                state.status = 'fail';
+                state.status = Status.FAIL;
                 state.error = action.payload as string || 'Неизвестная ошибка';
                 state.items = [];
             });

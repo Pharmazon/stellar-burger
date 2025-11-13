@@ -1,12 +1,12 @@
 import React, {ReactElement} from "react";
 import styles from './app-header-card.module.css';
 
-interface AppHeaderCardProps {
+interface IAppHeaderCardProps {
     iconComponent: ReactElement,
     text: string
 }
 
-const AppHeaderCard = ({iconComponent, text}: AppHeaderCardProps) => {
+const AppHeaderCard = ({iconComponent, text}: IAppHeaderCardProps) => {
     return (
         <div className={`${styles.header_block}`}>
             <div>{iconComponent}</div>

@@ -1,6 +1,6 @@
 import {BASE_URL} from "./constants";
-import {ApiResponse} from "../types/apiResponse";
-import {TokenResponse} from "../types/tokenResponse";
+import {IApiResponse} from "../types/apiResponse";
+import {ITokenResponse} from "../types/tokenResponse";
 import tokens from "./token";
 
 const updateTokens = async (): Promise<boolean> => {
@@ -18,7 +18,7 @@ const updateTokens = async (): Promise<boolean> => {
             body: JSON.stringify({token: refreshToken}),
         });
 
-        const refreshTokenResponse: TokenResponse = await response.json();
+        const refreshTokenResponse: ITokenResponse = await response.json();
         if (!refreshTokenResponse.success) {
             return false;
         }
@@ -32,14 +32,14 @@ const updateTokens = async (): Promise<boolean> => {
     }
 };
 
-const checkSuccess = <T extends ApiResponse>(res: T): Promise<T> => {
+const checkSuccess = <T extends IApiResponse>(res: T): Promise<T> => {
     if (res && res.success) {
         return Promise.resolve<T>(res);
     }
     return Promise.reject(new Error(`Ответ не success: ${res}`));
 };
 
-const performRequest = async <T extends ApiResponse>(
+const performRequest = async <T extends IApiResponse>(
     endpoint: string,
     options?: RequestInit
 ): Promise<T> => {
@@ -76,11 +76,11 @@ const performRequest = async <T extends ApiResponse>(
     return makeRequest();
 };
 
-export const performGetRequest = async <T extends ApiResponse>(endpoint: string) => {
+export const performGetRequest = async <T extends IApiResponse>(endpoint: string) => {
     return performRequest<T>(endpoint);
 };
 
-export const performPostRequest = async <T extends ApiResponse>(
+export const performPostRequest = async <T extends IApiResponse>(
     endpoint: string,
     body: any
 ): Promise<T> => {
@@ -93,7 +93,7 @@ export const performPostRequest = async <T extends ApiResponse>(
     });
 };
 
-export const performPatchRequest = async <T extends ApiResponse>(
+export const performPatchRequest = async <T extends IApiResponse>(
     endpoint: string,
     body: any
 ): Promise<T> => {
