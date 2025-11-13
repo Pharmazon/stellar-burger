@@ -1,12 +1,12 @@
 import React from "react";
 import styles from './nutrition-card.module.css';
 
-interface NutritionCardProps {
+interface INutritionCardProps {
     name: string
     value: number
 }
 
-const NutritionCard = ({name, value}: NutritionCardProps) => {
+const NutritionCard = ({name, value}: INutritionCardProps) => {
 
     return (
         <div className={styles.container}>

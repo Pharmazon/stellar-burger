@@ -1,10 +1,10 @@
-import {ApiResponse} from './apiResponse';
+import {IApiResponse} from './apiResponse';
 
-export interface OrderResponse extends ApiResponse {
+export interface IOrderResponse extends IApiResponse {
     name: string;
-    order: Order;
+    order: IOrder;
 }
 
-export interface Order {
+export interface IOrder {
     number: number;
 }

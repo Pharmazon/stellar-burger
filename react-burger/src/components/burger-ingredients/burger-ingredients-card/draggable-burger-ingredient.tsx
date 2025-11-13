@@ -1,9 +1,9 @@
-import BurgerIngredientsCard, {BurgerIngredientsCardProps} from "./burger-ingredients-card";
+import BurgerIngredientsCard, {IBurgerIngredientsCardProps} from "./burger-ingredients-card";
 import {useDrag} from "react-dnd";
 import React from "react";
 import {DND_BURGER_INGREDIENT} from "../../../utils/constants";
 
-const DraggableBurgerIngredient = ({ingredient, quantityAdded}: BurgerIngredientsCardProps) => {
+const DraggableBurgerIngredient = ({ingredient, quantityAdded}: IBurgerIngredientsCardProps) => {
 
     const [{isDragging}, drag] = useDrag(() => ({
         type: DND_BURGER_INGREDIENT,

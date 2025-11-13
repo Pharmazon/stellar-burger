@@ -4,12 +4,12 @@ import {ReactElement} from "react";
 import Preloader from "../preloader/preloader";
 import {HOME_PATH, LOGIN_PATH} from "../../utils/constants";
 
-interface ProtectedRouteElementProps {
+interface IProtectedRouteElementProps {
     target: ReactElement,
     anonymous?: boolean
 }
 
-const ProtectedRouteElement = ({target, anonymous = false}: ProtectedRouteElementProps) => {
+const ProtectedRouteElement = ({target, anonymous = false}: IProtectedRouteElementProps) => {
 
     const user = useAppSelector((store) => store.user);
     const location = useLocation();

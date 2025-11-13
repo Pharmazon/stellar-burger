@@ -7,16 +7,16 @@ import {useModal} from "../../../hooks/useModal";
 import {useAppDispatch, useAppSelector} from "../../../services/store";
 import {createOrder} from "../../../services/order-slice";
 import {clear} from "../../../services/burger-constructor-slice";
-import {BurgerConstructorIngredient} from "../../../types/ingredient";
+import {IBurgerConstructorIngredient} from "../../../types/ingredient";
 import {useNavigate} from "react-router-dom";
 import {LOGIN_PATH} from "../../../utils/constants";
 
-interface BurgerConstructorTotalCardProps {
+interface IBurgerConstructorTotalCardProps {
     total: number;
-    itemsToOrder: BurgerConstructorIngredient[]
+    itemsToOrder: Array<IBurgerConstructorIngredient>
 }
 
-const BurgerConstructorTotalCard = ({total, itemsToOrder}: BurgerConstructorTotalCardProps) => {
+const BurgerConstructorTotalCard = ({total, itemsToOrder}: IBurgerConstructorTotalCardProps) => {
 
     const {isModalOpened, openModal, closeModal} = useModal();
     const dispatch = useAppDispatch();

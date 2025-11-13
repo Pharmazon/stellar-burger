@@ -1,23 +1,21 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import styles from './burger-ingredients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import {BUN_TYPE, MAIN_TYPE, SAUCE_TYPE} from "../../../utils/constants";
+import {IngredientSection, TNullableIngredientSection} from "../../../utils/constants";
 import {useAppSelector} from "../../../services/store";
 import DraggableBurgerIngredient from "../burger-ingredients-card/draggable-burger-ingredient";
 import DraggableBurgerBun from "../burger-ingredients-card/draggable-burger-bun";
-import {Ingredient} from "../../../types/ingredient";
+import {IIngredient} from "../../../types/ingredient";
 import Preloader from "../../preloader/preloader";
 
-type IngredientSection = 'bun' | 'sauce' | 'main';
-
-type CounterItem = {
+type TCounterItem = {
     id: string;
     quantity: number;
 };
 
 const BurgerIngredients = () => {
 
-    const [currentTab, setCurrentTab] = useState(BUN_TYPE);
+    const [currentTab, setCurrentTab] = useState<IngredientSection>(IngredientSection.BUN);
     const {items: ingredients, status, error} = useAppSelector((state) => state.burgerIngredients);
     const {
         ingredients: constructorIngredients,
@@ -37,12 +35,12 @@ const BurgerIngredients = () => {
 
         const handleScroll = () => {
             const sections = [
-                {type: BUN_TYPE, domRect: bunRef.current?.getBoundingClientRect()},
-                {type: SAUCE_TYPE, domRect: sauceRef.current?.getBoundingClientRect()},
-                {type: MAIN_TYPE, domRect: mainRef.current?.getBoundingClientRect()}
+                {type: IngredientSection.BUN, domRect: bunRef.current?.getBoundingClientRect()},
+                {type: IngredientSection.SAUCE, domRect: sauceRef.current?.getBoundingClientRect()},
+                {type: IngredientSection.MAIN, domRect: mainRef.current?.getBoundingClientRect()}
             ];
 
-            let nearSection = null;
+            let nearSection: TNullableIngredientSection = null;
             let minDistance = Infinity;
             const containerDomRect = container.getBoundingClientRect();
 
@@ -74,24 +72,24 @@ const BurgerIngredients = () => {
     });
 
     const bunIngredients = useMemo(() => {
-        return ingredients.filter((ingredient) => BUN_TYPE === ingredient.type);
+        return ingredients.filter((ingredient) => IngredientSection.BUN === ingredient.type);
     }, [ingredients]);
 
     const sauceIngredients = useMemo(() => {
-        return ingredients.filter((ingredient) => SAUCE_TYPE === ingredient.type);
+        return ingredients.filter((ingredient) => IngredientSection.SAUCE === ingredient.type);
     }, [ingredients]);
 
     const mainIngredients = useMemo(() => {
-        return ingredients.filter((ingredient) => MAIN_TYPE === ingredient.type);
+        return ingredients.filter((ingredient) => IngredientSection.MAIN === ingredient.type);
     }, [ingredients]);
 
     const getRef = (section: IngredientSection) => {
         switch (section) {
-            case BUN_TYPE:
+            case IngredientSection.BUN:
                 return bunRef;
-            case SAUCE_TYPE:
+            case IngredientSection.SAUCE:
                 return sauceRef;
-            case MAIN_TYPE:
+            case IngredientSection.MAIN:
                 return mainRef;
             default:
                 throw new Error("Неизвестная секция ингредиентов");
@@ -107,14 +105,14 @@ const BurgerIngredients = () => {
             });
         }
     };
-    
-    const getByType = (section: IngredientSection): Ingredient[] => {
+
+    const getByType = (section: IngredientSection): Array<IIngredient> => {
         switch (section) {
-            case BUN_TYPE:
+            case IngredientSection.BUN:
                 return bunIngredients;
-            case SAUCE_TYPE:
+            case IngredientSection.SAUCE:
                 return sauceIngredients;
-            case MAIN_TYPE:
+            case IngredientSection.MAIN:
                 return mainIngredients;
             default:
                 throw new Error("Неизвестная секция ингредиентов");
@@ -122,7 +120,7 @@ const BurgerIngredients = () => {
     }
 
     const counterArray = useMemo(() => {
-        const result: CounterItem[] = [];
+        const result: Array<TCounterItem> = [];
 
         constructorIngredients?.forEach((ingredient) => {
             const id = ingredient.item._id;
@@ -148,8 +146,8 @@ const BurgerIngredients = () => {
     };
 
     const renderBunSection = () => {
-        const ref = getRef(BUN_TYPE);
-        const buns = getByType(BUN_TYPE)
+        const ref = getRef(IngredientSection.BUN);
+        const buns = getByType(IngredientSection.BUN)
         return (
             <div ref={ref}>
                 <div className="text text_type_main-medium pt-10">Булки</div>
@@ -199,23 +197,23 @@ const BurgerIngredients = () => {
         <div className={styles.container}>
             <div className="text text_type_main-large pt-10">Соберите бургер</div>
             <div className={`${styles.button_block} pt-5`}>
-                <Tab 
-                    value={BUN_TYPE} 
-                    active={currentTab === BUN_TYPE} 
+                <Tab
+                    value={IngredientSection.BUN}
+                    active={currentTab === IngredientSection.BUN} 
                     onClick={handleClick}
                 >
                     Булки
                 </Tab>
-                <Tab 
-                    value={SAUCE_TYPE} 
-                    active={currentTab === SAUCE_TYPE} 
+                <Tab
+                    value={IngredientSection.SAUCE}
+                    active={currentTab === IngredientSection.SAUCE} 
                     onClick={handleClick}
                 >
                     Соусы
                 </Tab>
-                <Tab 
-                    value={MAIN_TYPE} 
-                    active={currentTab === MAIN_TYPE} 
+                <Tab
+                    value={IngredientSection.MAIN}
+                    active={currentTab === IngredientSection.MAIN} 
                     onClick={handleClick}
                 >
                     Начинки
@@ -236,8 +234,8 @@ const BurgerIngredients = () => {
                     className={styles.components_container}
                 >
                     {renderBunSection()}
-                    {renderIngredientSection("Соусы", SAUCE_TYPE)}
-                    {renderIngredientSection("Начинки", MAIN_TYPE)}
+                    {renderIngredientSection("Соусы", IngredientSection.SAUCE)}
+                    {renderIngredientSection("Начинки", IngredientSection.MAIN)}
                 </div>
             }
         </div>

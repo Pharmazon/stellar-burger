@@ -1,11 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Ingredient} from "../types/ingredient";
+import {IIngredient} from "../types/ingredient";
 
-interface IngredientDetailsState {
-    ingredientDetails: Ingredient | null
+interface IIngredientDetailsState {
+    ingredientDetails: IIngredient | null
 }
 
-const initialState: IngredientDetailsState = {
+const initialState: IIngredientDetailsState = {
     ingredientDetails: null
 }
 
@@ -13,7 +13,7 @@ const ingredientDetailsSlice = createSlice({
     name: 'ingredientDetails',
     initialState: initialState,
     reducers: {
-        select: (state, action: PayloadAction<Ingredient>) => {
+        select: (state, action: PayloadAction<IIngredient>) => {
             state.ingredientDetails = action.payload;
         },
         deselect: (state) => {

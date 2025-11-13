@@ -1,4 +1,4 @@
-export interface Ingredient {
+export interface IIngredient {
     _id: string;
     name: string;
     type: 'bun' | 'main' | 'sauce';
@@ -13,7 +13,7 @@ export interface Ingredient {
     __v: number;
 }
 
-export interface BurgerConstructorIngredient {
+export interface IBurgerConstructorIngredient {
     num: number
-    item: Ingredient
+    item: IIngredient
 }

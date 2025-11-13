@@ -597,3 +597,4 @@ export default Title;
 
 48. npm install @reduxjs/toolkit
 49. npm i react-dnd react-dnd-html5-backend
+50. npm install --save-dev @types/library-name 

@@ -1,3 +1,3 @@
-export interface OrderRequest {
-    ingredients: string[];
+export interface IOrderRequest {
+    ingredients: Array<string>;
 }
