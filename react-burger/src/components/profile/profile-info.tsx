@@ -1,14 +1,17 @@
 import styles from './profile-info.module.css';
 import {useAppDispatch, useAppSelector} from "../../services/store";
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {updateUserDetails} from "../../services/user-slice";
+import {updateUserDetails} from "../../services/slice/user-slice";
 import Preloader from "../preloader/preloader";
 import {useForm} from "../../hooks/useForm";
+import {useNavigate} from "react-router-dom";
+import {LOGIN_PATH} from "../../utils/constants";
 
 const ProfileInfo = () => {
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const user = useAppSelector((state) => state.user);
     const [anyInputChanged, setAnyInputChanged] = useState(false);
     const [nameInputDisabled, setNameInputDisabled] = useState(true);
@@ -17,6 +20,12 @@ const ProfileInfo = () => {
         login: user.user?.email ?? '',
         password: ''
     });
+
+    useEffect(() => {
+        if (!user.isLoggedIn) {
+            navigate(LOGIN_PATH);
+        }
+    }, []);
 
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setAnyInputChanged(e.target.value !== user.user?.name);

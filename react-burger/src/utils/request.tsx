@@ -3,7 +3,37 @@ import {IApiResponse} from "../types/apiResponse";
 import {ITokenResponse} from "../types/tokenResponse";
 import tokens from "./token";
 
-const updateTokens = async (): Promise<boolean> => {
+export const performGetRequest = async <T extends IApiResponse>(endpoint: string) => {
+    return performRequest<T>(endpoint);
+};
+
+export const performPostRequest = async <T extends IApiResponse>(
+    endpoint: string,
+    body: any
+): Promise<T> => {
+    return performRequest<T>(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    });
+};
+
+export const performPatchRequest = async <T extends IApiResponse>(
+    endpoint: string,
+    body: any
+): Promise<T> => {
+    return performRequest<T>(endpoint, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+    });
+};
+
+export const updateTokens = async (): Promise<boolean> => {
     const refreshToken = tokens.getRefreshToken();
     if (!refreshToken) {
         return false;
@@ -74,34 +104,4 @@ const performRequest = async <T extends IApiResponse>(
     }
 
     return makeRequest();
-};
-
-export const performGetRequest = async <T extends IApiResponse>(endpoint: string) => {
-    return performRequest<T>(endpoint);
-};
-
-export const performPostRequest = async <T extends IApiResponse>(
-    endpoint: string,
-    body: any
-): Promise<T> => {
-    return performRequest<T>(endpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    });
-};
-
-export const performPatchRequest = async <T extends IApiResponse>(
-    endpoint: string,
-    body: any
-): Promise<T> => {
-    return performRequest<T>(endpoint, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    });
 };

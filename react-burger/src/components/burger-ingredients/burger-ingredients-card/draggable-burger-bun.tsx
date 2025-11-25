@@ -19,7 +19,7 @@ const DraggableBurgerBun = ({ingredient, quantityAdded}: IBurgerIngredientsCardP
         <div ref={drag as any} style={{opacity: isDragging ? 0.5 : 1}}>
             <BurgerIngredientsCard
                 ingredient={ingredient}
-                quantityAdded={quantityAdded}
+                quantityAdded={quantityAdded * 2}
             />
         </div>
     );

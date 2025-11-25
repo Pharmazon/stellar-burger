@@ -2,7 +2,7 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../services/store";
 import React, {useEffect} from "react";
 import styles from "./page-ingredient-info.module.css";
-import {deselect, select} from "../../services/ingredient-details-slice";
+import {deselect, select} from "../../services/slice/ingredient-details-slice";
 import IngredientDetails from "../../components/modal/ingredient-details/ingredient-details";
 import Modal from "../../components/modal/modal/modal";
 
@@ -40,7 +40,6 @@ const PageIngredientInfo = () => {
     if (isModal) {
         return (
             <Modal
-                title="Детали ингредиента"
                 onClose={handleCloseModal}
                 width={720}
                 height={539}
@@ -53,7 +52,6 @@ const PageIngredientInfo = () => {
     return (
         <div className={`${styles.container}`}>
             <div className={`${styles.block} mt-20`}>
-                <p className={`${styles.header} text text_type_main-large`}>Детали ингредиента</p>
                 <IngredientDetails ingredient={selectedIngredient}/>
             </div>
         </div>

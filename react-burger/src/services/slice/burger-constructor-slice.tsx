@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IBurgerConstructorIngredient, IIngredient} from "../types/ingredient";
+import {IBurgerConstructorIngredient, IIngredient} from "../../types/ingredient";
 
 interface IBurgerConstructorState {
     ingredients: Array<IBurgerConstructorIngredient>,
@@ -17,7 +17,7 @@ interface IMoveIngredientAction {
 }
 
 const burgerConstructorSlice = createSlice({
-    name: 'burgerConstructor',
+    name: 'burger/constructor',
     initialState: initialState,
     reducers: {
         clear: (state) => {
@@ -50,5 +50,12 @@ export const {
     moveIngredient,
     clear
 } = burgerConstructorSlice.actions;
+
+export type BurgerConstructorActions =
+    | ReturnType<typeof addIngredient>
+    | ReturnType<typeof removeIngredient>
+    | ReturnType<typeof addBun>
+    | ReturnType<typeof moveIngredient>
+    | ReturnType<typeof clear>
 
 export default burgerConstructorSlice.reducer;

@@ -5,15 +5,15 @@ import OrderDetails from "../../modal/order-details/order-details";
 import Modal from "../../modal/modal/modal";
 import {useModal} from "../../../hooks/useModal";
 import {useAppDispatch, useAppSelector} from "../../../services/store";
-import {createOrder} from "../../../services/order-slice";
-import {clear} from "../../../services/burger-constructor-slice";
-import {IBurgerConstructorIngredient} from "../../../types/ingredient";
+import {createOrder} from "../../../services/slice/order-slice";
+import {clear} from "../../../services/slice/burger-constructor-slice";
+import {IIngredient} from "../../../types/ingredient";
 import {useNavigate} from "react-router-dom";
-import {LOGIN_PATH} from "../../../utils/constants";
+import {ElementState, LOGIN_PATH} from "../../../utils/constants";
 
 interface IBurgerConstructorTotalCardProps {
     total: number;
-    itemsToOrder: Array<IBurgerConstructorIngredient>
+    itemsToOrder: ReadonlyArray<IIngredient>
 }
 
 const BurgerConstructorTotalCard = ({total, itemsToOrder}: IBurgerConstructorTotalCardProps) => {
@@ -31,7 +31,7 @@ const BurgerConstructorTotalCard = ({total, itemsToOrder}: IBurgerConstructorTot
         }
 
         await dispatch(createOrder({
-            ingredients: itemsToOrder.map(item => item.item._id)
+            ingredients: itemsToOrder.map(item => item._id)
         }));
         openModal();
     };
@@ -46,13 +46,13 @@ const BurgerConstructorTotalCard = ({total, itemsToOrder}: IBurgerConstructorTot
             <div className={styles.total_currency}>
                 <span className={'text text_type_digits-medium mr-3'}>{total}</span>
                 <div className={styles.currency_icon}>
-                    <CurrencyIcon type="primary"/>
+                    <CurrencyIcon type={ElementState.PRIMARY}/>
                 </div>
             </div>
             <div className={'ml-10'}>
                 <Button
                     htmlType="button"
-                    type="primary"
+                    type={ElementState.PRIMARY}
                     size="large"
                     onClick={handleClick}
                 >

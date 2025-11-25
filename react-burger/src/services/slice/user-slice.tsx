@@ -1,16 +1,16 @@
-import {IUser} from "../types/user";
+import {IUser} from "../../types/user";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IUserResponse} from "../types/userResponse";
-import {performGetRequest, performPatchRequest, performPostRequest} from "../utils/request";
-import {IRegisterRequest} from "../types/registerRequest";
-import {ILoginRequest} from "../types/loginRequest";
-import {IApiResponse} from "../types/apiResponse";
-import tokens from "../utils/token";
-import {IUpdateUserRequest} from "../types/updateUserRequest";
-import {Status} from "../utils/constants";
+import {IUserResponse} from "../../types/userResponse";
+import {performGetRequest, performPatchRequest, performPostRequest} from "../../utils/request";
+import {IRegisterRequest} from "../../types/registerRequest";
+import {ILoginRequest} from "../../types/loginRequest";
+import {IApiResponse} from "../../types/apiResponse";
+import tokens from "../../utils/token";
+import {IUpdateUserRequest} from "../../types/updateUserRequest";
+import {ApiStatus} from "../../utils/constants";
 
 export interface IUserData {
-    status: Status;
+    status: ApiStatus;
     error: string | null;
     user: IUser | null;
     isLoggedIn: boolean;
@@ -19,7 +19,7 @@ export interface IUserData {
 
 const initialState: IUserData = {
     user: null,
-    status: Status.INIT,
+    status: ApiStatus.INIT,
     error: null,
     isLoggedIn: !!(tokens.getRefreshToken() && tokens.getAccessToken()),
     isPasswordRestored: false
@@ -150,96 +150,96 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(login.pending, (state: IUserData) => {
-                state.status = Status.LOADING;
+                state.status = ApiStatus.LOADING;
                 state.error = null;
             })
             .addCase(login.fulfilled, (state: IUserData, action: PayloadAction<IUserResponse>) => {
-                state.status = Status.SUCCESS;
+                state.status = ApiStatus.SUCCESS;
                 state.error = null;
                 state.user = action.payload.user;
                 state.isLoggedIn = true;
             })
             .addCase(login.rejected, (state: IUserData, action: any) => {
-                state.status = Status.FAIL;
+                state.status = ApiStatus.FAIL;
                 state.error = action.payload.message;
                 state.user = null;
             })
             .addCase(register.pending, (state: IUserData) => {
-                state.status = Status.LOADING;
+                state.status = ApiStatus.LOADING;
                 state.error = null;
             })
             .addCase(register.fulfilled, (state: IUserData, action: PayloadAction<IUserResponse>) => {
-                state.status = Status.SUCCESS;
+                state.status = ApiStatus.SUCCESS;
                 state.error = null;
                 state.user = action.payload.user;
                 state.isLoggedIn = true;
             })
             .addCase(register.rejected, (state: IUserData, action: any) => {
-                state.status = Status.FAIL;
+                state.status = ApiStatus.FAIL;
                 state.error = action.payload.message;
                 state.user = null;
                 state.isLoggedIn = false;
             })
             .addCase(logout.pending, (state: IUserData) => {
-                state.status = Status.LOADING;
+                state.status = ApiStatus.LOADING;
                 state.error = null;
             })
             .addCase(logout.rejected, (state: IUserData, action: any) => {
-                state.status = Status.FAIL;
+                state.status = ApiStatus.FAIL;
                 state.error = action.payload.message;
                 state.user = null;
                 state.isLoggedIn = false;
             })
             .addCase(logout.fulfilled, (state: IUserData) => {
                 state.user = null;
-                state.status = Status.INIT;
+                state.status = ApiStatus.INIT;
                 state.error = null;
                 state.isLoggedIn = false;
             })
             .addCase(getUserDetails.pending, (state: IUserData) => {
-                state.status = Status.LOADING;
+                state.status = ApiStatus.LOADING;
                 state.error = null;
             })
             .addCase(getUserDetails.fulfilled, (state: IUserData, action: PayloadAction<IUserResponse>) => {
-                state.status = Status.SUCCESS;
+                state.status = ApiStatus.SUCCESS;
                 state.error = null;
                 state.user = action.payload.user;
                 state.isLoggedIn = true;
             })
             .addCase(getUserDetails.rejected, (state: IUserData, action: any) => {
-                state.status = Status.FAIL;
+                state.status = ApiStatus.FAIL;
                 state.error = action.payload.message;
                 state.user = null;
                 state.isLoggedIn = false;
             })
             .addCase(updateUserDetails.pending, (state: IUserData) => {
-                state.status = Status.LOADING;
+                state.status = ApiStatus.LOADING;
                 state.error = null;
             })
             .addCase(updateUserDetails.fulfilled, (state: IUserData, action: PayloadAction<IUserResponse>) => {
-                state.status = Status.SUCCESS;
+                state.status = ApiStatus.SUCCESS;
                 state.error = null;
                 state.user = action.payload.user;
                 state.isLoggedIn = true;
             })
             .addCase(updateUserDetails.rejected, (state: IUserData, action: any) => {
-                state.status = Status.FAIL;
+                state.status = ApiStatus.FAIL;
                 state.error = action.payload.message;
                 state.user = null;
                 state.isLoggedIn = false;
             })
             .addCase(forgotPassword.pending, (state: IUserData) => {
-                state.status = Status.LOADING;
+                state.status = ApiStatus.LOADING;
                 state.error = null;
             })
             .addCase(forgotPassword.fulfilled, (state: IUserData) => {
-                state.status = Status.SUCCESS;
+                state.status = ApiStatus.SUCCESS;
                 state.error = null;
                 state.isPasswordRestored = true;
                 state.isLoggedIn = false;
             })
             .addCase(forgotPassword.rejected, (state: IUserData, action: any) => {
-                state.status = Status.FAIL;
+                state.status = ApiStatus.FAIL;
                 state.error = action.payload.message;
                 state.user = null;
                 state.isLoggedIn = false;
@@ -249,3 +249,23 @@ const userSlice = createSlice({
 
 export const {clearForgotPassword} = userSlice.actions;
 export default userSlice.reducer;
+export type UserActions =
+    | ReturnType<typeof clearForgotPassword>
+    | ReturnType<typeof login.pending>
+    | ReturnType<typeof login.fulfilled>
+    | ReturnType<typeof login.rejected>
+    | ReturnType<typeof register.pending>
+    | ReturnType<typeof register.fulfilled>
+    | ReturnType<typeof register.rejected>
+    | ReturnType<typeof logout.pending>
+    | ReturnType<typeof logout.fulfilled>
+    | ReturnType<typeof logout.rejected>
+    | ReturnType<typeof getUserDetails.pending>
+    | ReturnType<typeof getUserDetails.fulfilled>
+    | ReturnType<typeof getUserDetails.rejected>
+    | ReturnType<typeof updateUserDetails.pending>
+    | ReturnType<typeof updateUserDetails.fulfilled>
+    | ReturnType<typeof updateUserDetails.rejected>
+    | ReturnType<typeof forgotPassword.pending>
+    | ReturnType<typeof forgotPassword.fulfilled>
+    | ReturnType<typeof forgotPassword.rejected>;

@@ -4,7 +4,7 @@ import React, {useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {LOGIN_PATH, RESET_PASSWORD_PATH} from "../../utils/constants";
 import {useAppDispatch} from "../../services/store";
-import {clearForgotPassword, forgotPassword} from "../../services/user-slice";
+import {clearForgotPassword, forgotPassword} from "../../services/slice/user-slice";
 import {useForm} from "../../hooks/useForm";
 
 const PageForgotPassword = () => {

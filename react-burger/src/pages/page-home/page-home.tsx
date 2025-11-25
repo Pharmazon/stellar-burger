@@ -3,13 +3,12 @@ import BurgerIngredients from "../../components/burger-ingredients/burger-ingred
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor/burger-constructor";
 import {useAppDispatch, useAppSelector} from "../../services/store";
 import {useEffect} from "react";
-import {getUserDetails} from "../../services/user-slice";
+import {getUserDetails} from "../../services/slice/user-slice";
 
 const PageHome = () => {
 
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
-    const {items} = useAppSelector((state) => state.burgerIngredients);
 
     useEffect(() => {
         if (user.isLoggedIn && !user.user) {

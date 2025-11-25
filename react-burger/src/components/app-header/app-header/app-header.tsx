@@ -3,7 +3,7 @@ import React, {useMemo} from "react";
 import styles from './app-header.module.css';
 import AppHeaderCard from "../app-header-card/app-header-card";
 import {Link} from "react-router-dom";
-import {HOME_PATH, PROFILE_PATH} from "../../../utils/constants";
+import {ElementState, FEED_PATH, HOME_PATH, PROFILE_PATH} from "../../../utils/constants";
 import {useAppSelector} from "../../../services/store";
 
 const AppHeader = () => {
@@ -12,7 +12,7 @@ const AppHeader = () => {
 
     const getIconType = useMemo(() => {
         return user.isLoggedIn
-            ? 'primary'
+            ? ElementState.PRIMARY
             : 'secondary';
     }, [user.isLoggedIn]);
     
@@ -26,12 +26,12 @@ const AppHeader = () => {
                             text={'Конструктор'}
                         />
                     </Link>
-                    <div className={'text_color_inactive'}>
+                    <Link to={FEED_PATH} className={styles.link}>
                         <AppHeaderCard
                             iconComponent={<ListIcon type={getIconType}/>}
                             text={'Лента заказов'}
                         />
-                    </div>
+                    </Link>
                 </div>
 
                 <Link to={HOME_PATH} className={styles.link}>

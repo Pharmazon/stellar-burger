@@ -12,6 +12,7 @@ const IngredientDetails = ({ingredient}: IIngredientDetailsProps) => {
 
     return (
         <div className={`${styles.container} mb-15`}>
+            <p className={'text text_type_main-large'}>Детали ингредиента</p>
             <div className={`${styles.logo_container} mb-4`}>
                 <div className={`${styles.logo} mb-4`}>
                     <img
@@ -21,7 +22,7 @@ const IngredientDetails = ({ingredient}: IIngredientDetailsProps) => {
                 </div>
             </div>
             <span
-                className={`${styles.description} text text_type_main-medium mb-8`}>{ingredient.name}</span>
+                className={`${styles.description} text text_type_main-medium`}>{ingredient.name}</span>
             <div className={`${styles.nutrition_container}`}>
                 <NutritionCard name={'Калории,ккал'} value={ingredient.calories}/>
                 <NutritionCard name={'Белки, г'} value={ingredient.proteins}/>

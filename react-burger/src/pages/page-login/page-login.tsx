@@ -4,7 +4,7 @@ import React from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {useAppDispatch} from "../../services/store";
 import {FORGOT_PASSWORD_PATH, HOME_PATH, REGISTER_PATH} from "../../utils/constants";
-import {login} from "../../services/user-slice";
+import {login} from "../../services/slice/user-slice";
 import {useForm} from "../../hooks/useForm";
 
 const PageLogin = () => {

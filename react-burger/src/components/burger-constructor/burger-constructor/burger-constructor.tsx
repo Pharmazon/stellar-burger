@@ -10,7 +10,7 @@ import {
 } from "../../../utils/constants";
 import {useAppDispatch, useAppSelector} from "../../../services/store";
 import {useDrop} from "react-dnd";
-import {addBun, addIngredient, moveIngredient} from "../../../services/burger-constructor-slice";
+import {addBun, addIngredient, moveIngredient} from "../../../services/slice/burger-constructor-slice";
 import DraggableBurgerConstructorCard from "../burger-constructor-card/draggable-burger-constructor-card";
 import {IIngredient} from "../../../types/ingredient";
 
@@ -25,7 +25,7 @@ const BurgerConstructor = () => {
     const calculateTotal = useMemo(() => {
         return ingredients.reduce((total, ingredient) => {
             return total + (ingredient.item.price || 0);
-        }, 0) + (selectedBun?.price || 0);
+        }, 0) + (selectedBun?.price || 0) * 2;
     }, [ingredients, selectedBun]);
 
     const renderIngredientCard = (
@@ -111,6 +111,25 @@ const BurgerConstructor = () => {
         }),
     });
 
+    const itemsToOrder = useMemo(() => {
+        const orderItems: (IIngredient | null)[] = [];
+
+        if (selectedBun) {
+            orderItems.push(selectedBun); // верхняя булка
+        }
+
+        // Добавляем все ингредиенты
+        ingredients.forEach(ing => {
+            orderItems.push(ing.item);
+        });
+
+        if (selectedBun) {
+            orderItems.push(selectedBun); // нижняя булка
+        }
+
+        return orderItems.filter(item => item !== null) as IIngredient[];
+    }, [ingredients, selectedBun]);
+
     return (
         <div className={`${styles.main_container}`}>
             <div className={`${styles.burger_container} mt-25 ml-4`}>
@@ -176,7 +195,7 @@ const BurgerConstructor = () => {
                 allRequiredSelected() && (
                     <BurgerConstructorTotalCard
                         total={calculateTotal}
-                        itemsToOrder={ingredients}
+                        itemsToOrder={itemsToOrder}
                     />
                 )
             }

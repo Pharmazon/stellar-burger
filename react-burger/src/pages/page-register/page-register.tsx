@@ -4,7 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../services/store";
 import {HOME_PATH, LOGIN_PATH} from "../../utils/constants";
 import styles from './page-register.module.css';
-import {register} from "../../services/user-slice";
+import {register} from "../../services/slice/user-slice";
 import {useForm} from "../../hooks/useForm";
 
 const PageRegister = () => {

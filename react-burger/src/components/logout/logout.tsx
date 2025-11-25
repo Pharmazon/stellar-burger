@@ -2,7 +2,7 @@ import {useAppDispatch} from "../../services/store";
 import React, {ReactElement} from "react";
 import {useNavigate} from "react-router-dom";
 import {LOGIN_PATH, LOGOUT_PATH} from "../../utils/constants";
-import {logout} from "../../services/user-slice";
+import {logout} from "../../services/slice/user-slice";
 import tokens from "../../utils/token";
 
 interface ILogoutProps {
