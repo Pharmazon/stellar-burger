@@ -5,6 +5,7 @@ export interface IFeedOrder {
     _id: string;
     status: FeedOrderStatus;
     name: string;
+    owner: string;
     number: number;
     createdAt: string;
     updatedAt: string;

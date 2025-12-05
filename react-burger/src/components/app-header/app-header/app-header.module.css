@@ -38,3 +38,8 @@
     text-decoration: none;
     color: inherit
 }
+
+.link_active {
+    color: #00cccc;
+    text-decoration: none;
+}

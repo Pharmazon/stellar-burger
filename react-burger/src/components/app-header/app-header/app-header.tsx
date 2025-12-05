@@ -2,7 +2,7 @@ import {BurgerIcon, ListIcon, Logo, ProfileIcon} from "@ya.praktikum/react-devel
 import React, {useMemo} from "react";
 import styles from './app-header.module.css';
 import AppHeaderCard from "../app-header-card/app-header-card";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import {ElementState, FEED_PATH, HOME_PATH, PROFILE_PATH} from "../../../utils/constants";
 import {useAppSelector} from "../../../services/store";
 
@@ -20,18 +20,24 @@ const AppHeader = () => {
         <header className={styles.header}>
             <div className={styles.header_container}>
                 <div className={`${styles.left_group}`}>
-                    <Link to={HOME_PATH} className={styles.link}>
+                    <NavLink
+                        to={HOME_PATH}
+                        className={({isActive}) => (isActive ? styles.link_active : styles.link)}
+                    >
                         <AppHeaderCard
                             iconComponent={<BurgerIcon type={getIconType}/>}
                             text={'Конструктор'}
                         />
-                    </Link>
-                    <Link to={FEED_PATH} className={styles.link}>
+                    </NavLink>
+                    <NavLink
+                        to={FEED_PATH}
+                        className={({isActive}) => (isActive ? styles.link_active : styles.link)}
+                    >
                         <AppHeaderCard
                             iconComponent={<ListIcon type={getIconType}/>}
                             text={'Лента заказов'}
                         />
-                    </Link>
+                    </NavLink>
                 </div>
 
                 <Link to={HOME_PATH} className={styles.link}>
@@ -39,12 +45,15 @@ const AppHeader = () => {
                 </Link>
 
                 <div className={styles.right_item}>
-                    <Link to={PROFILE_PATH} className={styles.link}>
+                    <NavLink
+                        to={PROFILE_PATH}
+                        className={({isActive}) => (isActive ? styles.link_active : styles.link)}
+                    >
                         <AppHeaderCard
                             iconComponent={<ProfileIcon type={getIconType}/>}
                             text={'Личный кабинет'}
                         />
-                    </Link>
+                    </NavLink>
                 </div>
             </div>
         </header>

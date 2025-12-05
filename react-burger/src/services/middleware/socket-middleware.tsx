@@ -1,131 +1,110 @@
-import {Middleware} from '@reduxjs/toolkit';
-import {BASE_WSS_URL} from "../../utils/constants";
-import tokens from "../../utils/token";
-import {IFeedData} from "../../types/feedData";
-import {setPrivateFeedData} from "../slice/private-feed-slice";
-import {setPublicFeedData} from "../slice/public-feed-slice";
+import {ActionCreatorWithoutPayload, ActionCreatorWithPayload, Middleware} from '@reduxjs/toolkit';
 
-export const WS_CONNECTION_START = 'WS_CONNECTION_START';
-export const WS_CONNECTION_SUCCESS = 'WS_CONNECTION_SUCCESS';
-export const WS_CONNECTION_ERROR = 'WS_CONNECTION_ERROR';
-export const WS_CONNECTION_CLOSE = 'WS_CONNECTION_CLOSE';
+type WebSocketActions<TMessage> = {
+    connect: ActionCreatorWithPayload<string>;
+    disconnect: ActionCreatorWithoutPayload;
+    sendMessage: ActionCreatorWithPayload<TMessage>;
+    onConnected: ActionCreatorWithPayload<Event>;
+    onDisconnected: ActionCreatorWithPayload<CloseEvent>;
+    onMessageReceived: ActionCreatorWithPayload<TMessage>;
+    onError: ActionCreatorWithPayload<Event>;
+};
 
-export interface WSConnectionStartAction {
-    type: typeof WS_CONNECTION_START;
-    payload: { path: string; isPrivate: boolean };
-}
+type WebSocketOptions = {
+    withTokenRefresh: boolean;
+};
 
-interface WSConnectionCloseAction {
-    type: typeof WS_CONNECTION_CLOSE;
-}
-
-interface WSConnectionSuccessAction {
-    type: typeof WS_CONNECTION_SUCCESS;
-}
-
-interface WSConnectionErrorAction {
-    type: typeof WS_CONNECTION_ERROR;
-    payload: string;
-}
-
-export type WebSocketActions =
-    | WSConnectionStartAction
-    | WSConnectionCloseAction
-    | WSConnectionSuccessAction
-    | WSConnectionErrorAction;
-
-interface WebSocketMiddleware extends Middleware {
-    (store: any): (next: any) => (action: any) => any;
-}
-
-const socketMiddleware = (): WebSocketMiddleware => {
+export const createWebSocketMiddleware = <TMessage = unknown>(
+    {
+        connect,
+        disconnect,
+        sendMessage,
+        onConnected,
+        onDisconnected,
+        onMessageReceived,
+        onError,
+    }: WebSocketActions<TMessage>,
+    {withTokenRefresh}: WebSocketOptions
+): Middleware => {
     return store => {
 
         let socket: WebSocket | null = null;
-        let isConnecting = false;
+        let isConnected = false;
+        let reconnectTimer = 0;
+        let wsUrl: string;
 
         return next => (action: unknown) => {
             const {dispatch} = store;
-            const actionType = typeof action === 'object' && action !== null &&
-            'type' in action
-                ? (action as { type: string }).type
-                : 'unknown';
 
-            if (actionType === WS_CONNECTION_START) {
+            if (connect.match(action)) {
 
-                if (isConnecting || socket) {
-                    // Уже есть активное подключение или идёт подключение — не создавать новое
-                    return next(action);
+                if (socket !== null) {
+                    console.warn('WebSocket is already connected.');
+                    return;
                 }
 
-                const payload = (action as WSConnectionStartAction).payload;
-                const {path, isPrivate} = payload;
-
-                let wsUrl = `${BASE_WSS_URL}${path}`;
-                if (isPrivate) {
-                    const token = tokens.getCleanAccessToken();
-                    if (!token) {
-                        dispatch({
-                            type: WS_CONNECTION_ERROR,
-                            payload: 'Access токен не найден в cookie',
-                        });
-                        return next(action);
-                    }
-                    wsUrl += `?token=${token}`;
-                }
-
-                isConnecting = true;
+                wsUrl = action.payload;
                 socket = new WebSocket(wsUrl);
+                isConnected = true;
 
-                socket.onopen = () => {
-                    isConnecting = false;
-                    dispatch({type: WS_CONNECTION_SUCCESS});
+                socket.onopen = event => {
+                    dispatch(onConnected(event));
                 };
 
-                socket.onerror = () => {
-                    isConnecting = false;
-                    dispatch({
-                        type: WS_CONNECTION_ERROR,
-                        payload: 'Ошибка подключения WebSocket',
-                    });
+                socket.onerror = event => {
+                    dispatch(onError(event));
                     socket = null;
                 };
 
                 socket.onmessage = event => {
-                    try {
-                        const data: IFeedData = JSON.parse(event.data);
-                        if (isPrivate) {
-                            dispatch(setPrivateFeedData(data));
-                        } else {
-                            dispatch(setPublicFeedData(data));
-                        }
-                    } catch (e) {
-                        console.error('Ошибка парсинга WebSocket-сообщения:', e);
-                        dispatch({type: WS_CONNECTION_ERROR, payload: 'Не удалось обработать сообщение'});
-                    }
-                }
+                    const data = JSON.parse(event.data);
+                    dispatch(onMessageReceived(data));
 
-                socket.onclose = () => {
-                    isConnecting = false;
-                    dispatch({type: WS_CONNECTION_CLOSE});
+                    if (withTokenRefresh && data.message === 'Invalid or missing token') {
+                        // refreshToken().then(refreshData => {
+                        //     const wssUrl = new URL(wsUrl);
+                        //     wssUrl.searchParams.set('token', refreshData.accessToken.replace('Bearer ', ''));
+                        //     dispatch(connect(wssUrl.toString()));
+                        // }); //TODO SAS
+
+                        dispatch(disconnect());
+                    }
+                };
+
+                socket.onclose = event => {
+                    dispatch(onDisconnected(event));
                     socket = null;
+
+                    if (isConnected) {
+                        reconnectTimer = window.setTimeout(() => {
+                            dispatch(connect(wsUrl));
+                        }, 3000);
+                    }
                 };
 
                 return next(action);
             }
 
-            if (actionType === WS_CONNECTION_CLOSE) {
+            if (disconnect.match(action)) {
                 if (socket !== null) {
                     socket.close();
-                    socket = null;
-                    isConnecting = false;
                 }
-                return next(action);
+
+                clearTimeout(reconnectTimer);
+                isConnected = false;
+                reconnectTimer = 0;
+                socket = null;
+            }
+
+            if (sendMessage.match(action)) {
+                if (socket !== null && socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify(action.payload));
+                } else {
+                    console.warn('WebSocket is not open. Cannot send message.');
+                }
             }
 
             return next(action);
         };
     };
 };
-
-export default socketMiddleware;

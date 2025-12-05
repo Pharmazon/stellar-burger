@@ -1,5 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {IFeedData} from "../../types/feedData";
+import {onMessageReceived} from "./actions";
 
 interface IPublicFeedState {
     data: IFeedData | null;
@@ -12,18 +13,12 @@ const initialState: IPublicFeedState = {
 const publicFeedSlice = createSlice({
     name: 'feed/public',
     initialState,
-    reducers: {
-        setPublicFeedData(state: IPublicFeedState, action) {
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(onMessageReceived, (state, action) => {
             state.data = action.payload;
-        },
-        removePublicFeedData(state: IPublicFeedState) {
-            state.data = null;
-        },
+        });
     }
 });
 
-export const {setPublicFeedData, removePublicFeedData} = publicFeedSlice.actions;
 export default publicFeedSlice.reducer;
-export type PublicFeedActions =
-    | ReturnType<typeof setPublicFeedData>
-    | ReturnType<typeof removePublicFeedData>

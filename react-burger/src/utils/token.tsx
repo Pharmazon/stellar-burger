@@ -28,19 +28,11 @@ const removeAccessToken = (): void => {
     Cookies.remove(ACCESS_TOKEN)
 }
 
-const getCleanAccessToken = () => {
-    let accessToken = getAccessToken();
-    return accessToken?.startsWith('Bearer ')
-        ? accessToken?.replace('Bearer ', '')
-        : accessToken;
-}
-
 export default {
     addAccessToken,
     addRefreshToken,
     getAccessToken,
     getRefreshToken,
     removeAccessToken,
-    removeRefreshToken,
-    getCleanAccessToken
+    removeRefreshToken
 };

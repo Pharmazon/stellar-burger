@@ -1,10 +1,5 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {
-    WS_CONNECTION_CLOSE,
-    WS_CONNECTION_ERROR,
-    WS_CONNECTION_START,
-    WS_CONNECTION_SUCCESS
-} from "../middleware/socket-middleware";
+import {createSlice} from "@reduxjs/toolkit";
+import {onConnected, onDisconnected, onError} from "./actions";
 
 interface ISocketState {
     wsConnected: boolean;
@@ -24,33 +19,23 @@ const socketSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addMatcher(
-                (action) => action.type === WS_CONNECTION_START,
-                (state) => {
-                    state.isLoading = true;
-                    state.error = null;
-                })
-            .addMatcher(
-                (action) => action.type === WS_CONNECTION_SUCCESS,
-                (state) => {
-                    state.wsConnected = true;
-                    state.isLoading = false;
-                    state.error = null;
-                })
-            .addMatcher(
-                (action) => action.type === WS_CONNECTION_ERROR,
-                (state, action: PayloadAction<string>) => {
-                    state.wsConnected = false;
-                    state.isLoading = false;
-                    state.error = action.payload;
-                })
-            .addMatcher(
-                (action) => action.type === WS_CONNECTION_CLOSE,
-                (state) => {
-                    state.wsConnected = false;
-                    state.isLoading = false;
-                })
-    }
+            .addCase(onConnected, (state) => {
+                state.wsConnected = true;
+                state.isLoading = false;
+                state.error = null;
+            })
+            .addCase(onDisconnected, (state) => {
+                state.wsConnected = false;
+                state.isLoading = false;
+                state.error = null;
+            })
+            .addCase(onError, (state, action) => {
+                state.wsConnected = false;
+                state.isLoading = false;
+                state.error = 'WebSocket error';
+                console.error('WebSocket error:', action.payload);
+            });
+    },
 });
 
 export default socketSlice.reducer;

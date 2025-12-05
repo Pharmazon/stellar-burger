@@ -1,10 +1,11 @@
 import styles from './page-profile.module.css';
 import {Link, Outlet, useLocation} from "react-router-dom";
-import {PROFILE_ORDERS_PATH, PROFILE_PATH} from "../../utils/constants";
+import {BASE_WSS_URL, PROFILE_ORDERS_PATH, PROFILE_PATH} from "../../utils/constants";
 import Logout from "../../components/logout/logout";
 import {useEffect} from "react";
 import {useAppDispatch} from "../../services/store";
-import {WS_CONNECTION_CLOSE, WS_CONNECTION_START} from "../../services/middleware/socket-middleware";
+import {connect, disconnect} from "../../services/slice/actions";
+import tokens from "../../utils/token";
 
 const PageProfile = () => {
 
@@ -21,18 +22,22 @@ const PageProfile = () => {
     };
 
     useEffect(() => {
-        if (location.pathname === PROFILE_ORDERS_PATH) {
-            dispatch({
-                type: WS_CONNECTION_START,
-                payload: {
-                    isPrivate: true,
-                    path: 'orders'
-                }
-            });
-            return () => {
-                dispatch({type: WS_CONNECTION_CLOSE});
-            };
+        if (location.pathname !== PROFILE_ORDERS_PATH) {
+            return
         }
+
+        const wssUrl = new URL(`${BASE_WSS_URL}orders`)
+        const token = tokens.getAccessToken();
+        if (!token) {
+            console.error("Токен протух");
+            return
+        }
+        wssUrl.searchParams.set('token', token.replace('Bearer ', ''));
+        dispatch(connect(wssUrl.toString()));
+
+        return () => {
+            dispatch(disconnect());
+        };
     }, [dispatch, location]);
 
     return (

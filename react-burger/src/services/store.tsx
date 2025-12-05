@@ -1,46 +1,62 @@
-import {Action, configureStore, ThunkDispatch, UnknownAction} from '@reduxjs/toolkit';
+import {combineReducers, configureStore, ThunkDispatch} from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 
-import ingredientDetailsReducer, {IngredientDetailsActions} from './slice/ingredient-details-slice';
-import burgerConstructorReducer, {BurgerConstructorActions} from './slice/burger-constructor-slice';
-import userReducer, {UserActions} from './slice/user-slice';
-import orderReducer, {OrderActions} from './slice/order-slice';
-import publicFeedReducer, {PublicFeedActions} from './slice/public-feed-slice';
+import ingredientDetailsReducer from './slice/ingredient-details-slice';
+import burgerConstructorReducer from './slice/burger-constructor-slice';
+import userReducer from './slice/user-slice';
+import orderReducer from './slice/order-slice';
+import publicFeedReducer from './slice/public-feed-slice';
 import socketReducer from './slice/socket-slice';
-import privateFeedReducer, {PrivateFeedActions} from './slice/private-feed-slice';
-import burgerIngredientsReducer, {BurgerIngredientsActions} from './slice/burger-ingredients-slice';
+import privateFeedReducer from './slice/private-feed-slice';
+import burgerIngredientsReducer from './slice/burger-ingredients-slice';
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import socketMiddleware, {WebSocketActions} from "./middleware/socket-middleware";
+import {createWebSocketMiddleware} from "./middleware/socket-middleware";
+import {
+    connect,
+    disconnect,
+    onConnected,
+    onDisconnected,
+    onError,
+    onMessageReceived,
+    RootAction,
+    sendMessage
+} from "./slice/actions";
+import {IFeedData} from "../types/feedData";
 
-export const store = configureStore({
-    reducer: {
-        burgerIngredients: burgerIngredientsReducer,
-        ingredientDetails: ingredientDetailsReducer,
-        burgerConstructor: burgerConstructorReducer,
-        order: orderReducer,
-        user: userReducer,
-        publicFeed: publicFeedReducer,
-        privateFeed: privateFeedReducer,
-        socket: socketReducer
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({serializableCheck: false})
-            .concat(logger)
-            .concat(socketMiddleware()),
-    devTools: process.env.NODE_ENV !== 'production',
+const rootReducer = combineReducers({
+    burgerIngredients: burgerIngredientsReducer,
+    ingredientDetails: ingredientDetailsReducer,
+    burgerConstructor: burgerConstructorReducer,
+    order: orderReducer,
+    user: userReducer,
+    publicFeed: publicFeedReducer,
+    privateFeed: privateFeedReducer,
+    socket: socketReducer
 });
 
-export type RootAction =
-    | BurgerConstructorActions
-    | BurgerIngredientsActions
-    | IngredientDetailsActions
-    | OrderActions
-    | WebSocketActions
-    | PrivateFeedActions
-    | PublicFeedActions
-    | UserActions
-    | Action
-    | UnknownAction;
+export const ordersFeedWebSocketMiddleware = createWebSocketMiddleware<IFeedData>(
+    {
+        connect,
+        disconnect,
+        sendMessage,
+        onConnected,
+        onDisconnected,
+        onMessageReceived,
+        onError
+    },
+    {
+        withTokenRefresh: true
+    }
+);
+
+export const store = configureStore({
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware =>
+        getDefaultMiddleware({serializableCheck: false})
+            .concat(logger)
+            .concat(ordersFeedWebSocketMiddleware),
+    devTools: process.env.NODE_ENV !== 'production',
+});
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = ThunkDispatch<RootState, unknown, RootAction>;

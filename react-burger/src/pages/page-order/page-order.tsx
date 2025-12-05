@@ -13,30 +13,27 @@ const PageOrder = () => {
     const dispatch = useAppDispatch();
     const location = useLocation();
     const navigate = useNavigate();
+    const publicFeedData = useAppSelector((state) => state.publicFeed.data);
+    const order = useAppSelector((state) => state.order.orderInfo);
 
     const orderNumber = Number(number);
-    const publicFeedData = useAppSelector((state) => state.publicFeed.data);
-    const privateFeedData = useAppSelector((state) => state.privateFeed.data);
-    const order = useAppSelector((state) => state.order.orderInfo);
     const isModal = !!location.state?.background;
 
     useEffect(() => {
-        if (!order && number) {
-            let orderData = publicFeedData?.orders.find(
-                (order) => order.number === orderNumber
-            );
-            if (!orderData) {
-                orderData = privateFeedData?.orders.find(
-                    (order) => order.number === orderNumber
-                );
-                if (orderData) {
-                    dispatch(setOrderInfo(orderData));
-                } else {
-                    dispatch(getOrder(orderNumber));
-                }
-            }
+        if (order || !number) {
+            return;
         }
-    }, [number, orderNumber]);
+
+        const foundOrder = publicFeedData?.orders?.find(
+            (order) => order.number === orderNumber
+        );
+
+        if (foundOrder) {
+            dispatch(setOrderInfo(foundOrder));
+        } else {
+            dispatch(getOrder(orderNumber));
+        }
+    }, [order, number, orderNumber, publicFeedData?.orders]);
 
     const handleCloseModal = () => {
         dispatch(deselect());

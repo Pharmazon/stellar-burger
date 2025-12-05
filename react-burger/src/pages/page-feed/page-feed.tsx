@@ -3,8 +3,9 @@ import styles from './page-feed.module.css';
 import FeedOrders from "../../components/feed/feed-orders/feed-orders";
 import FeedInfo from "../../components/feed/feed-info/feed-info";
 import React, {useEffect} from "react";
-import {WS_CONNECTION_CLOSE, WS_CONNECTION_START} from "../../services/middleware/socket-middleware";
+import {connect, disconnect} from "../../services/slice/actions";
 import Preloader from "../../components/preloader/preloader";
+import {BASE_WSS_URL} from "../../utils/constants";
 
 const PageFeed = () => {
 
@@ -12,15 +13,10 @@ const PageFeed = () => {
     const isSocketLoading = useAppSelector((state) => state.socket.isLoading)
 
     useEffect(() => {
-        dispatch({
-            type: WS_CONNECTION_START,
-            payload: {
-                isPrivate: false,
-                path: 'orders/all'
-            } 
-        });
+        dispatch(connect(`${BASE_WSS_URL}orders/all`));
+
         return () => {
-            dispatch({type: WS_CONNECTION_CLOSE});
+            dispatch(disconnect());
         };
     }, [dispatch]);
 
@@ -31,7 +27,7 @@ const PageFeed = () => {
     return (
         <div className={styles.body}>
             <div className={`${styles.container} pl-5`}>
-                <FeedOrders isPrivate={false}/>
+                <FeedOrders isPrivate={false} title={'Лента заказов'}/>
                 <FeedInfo/>
             </div>
         </div>
