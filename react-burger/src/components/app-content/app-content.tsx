@@ -65,6 +65,10 @@ const AppContent = () => {
                     />
                 </Route>
                 <Route
+                    path={PROFILE_ORDERS_NUMBER_PATH}
+                    element={<ProtectedRouteElement anonymous={false} target={<PageOrder/>}/>}
+                />
+                <Route
                     path={LOGIN_PATH}
                     element={<ProtectedRouteElement anonymous={true} target={<PageLogin/>}/>}
                 />
