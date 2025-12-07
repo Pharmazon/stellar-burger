@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './burger-ingredients-card.module.css';
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {IMAGE_ALT_TEXT_MAP, INGREDIENT_PATH, TIngredientId} from "../../../utils/constants";
+import {ElementState, IMAGE_ALT_TEXT_MAP, INGREDIENT_PATH, TIngredientId} from "../../../utils/constants";
 import {IIngredient} from "../../../types/ingredient";
 import {useLocation, useNavigate} from "react-router-dom";
 
@@ -40,7 +40,7 @@ const BurgerIngredientsCard = ({ingredient, quantityAdded}: IBurgerIngredientsCa
             <div className={styles.price_block}>
                 <span className="text text_type_digits-default">{ingredient.price}</span>
                 <div className="pl-2">
-                    <CurrencyIcon type="primary" />
+                    <CurrencyIcon type={ElementState.PRIMARY}/>
                 </div>
             </div>
              

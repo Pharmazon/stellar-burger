@@ -2,8 +2,8 @@ import React from "react";
 import styles from './burger-constructor-card.module.css';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useAppDispatch} from "../../../services/store";
-import {removeIngredient} from "../../../services/burger-constructor-slice";
-import {CardPosition, IngredientSection, TNullableCardPosition} from "../../../utils/constants";
+import {removeIngredient} from "../../../services/slice/burger-constructor-slice";
+import {CardPosition, ElementState, IngredientSection, TNullableCardPosition} from "../../../utils/constants";
 import {IIngredient} from "../../../types/ingredient";
 
 export interface IBurgerConstructorCardProps {
@@ -33,22 +33,18 @@ const BurgerConstructorCard = ({name, num, ingredient, type}: IBurgerConstructor
             ? CardPosition.BOTTOM
             : undefined
 
-    const price = IngredientSection.BUN === ingredient.type
-        ? ingredient.price / 2
-        : ingredient.price;
-
     return (
         <div className={`${styles.container}`}>
             <div className={`${styles.card}`}>
                 <div className={showDragIcon ? '' : styles.hidden}>
-                    <DragIcon type="primary"/>
+                    <DragIcon type={ElementState.PRIMARY}/>
                 </div>
                 <div className={styles.element}>
                     <ConstructorElement
                         type={constructorElementType}
                         isLocked={isLocked}
                         text={name}
-                        price={price}
+                        price={ingredient.price}
                         thumbnail={ingredient.image}
                         handleClose={handleClick}
                     />

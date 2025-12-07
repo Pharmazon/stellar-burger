@@ -1,4 +1,5 @@
 export const BASE_URL = "https://norma.education-services.ru/api/";
+export const BASE_WSS_URL = 'wss://norma.education-services.ru/';
 
 export enum IngredientSection {
     BUN = 'bun',
@@ -11,16 +12,29 @@ export enum CardPosition {
     BOTTOM = 'bottom'
 }
 
-export enum Status {
+export enum ApiStatus {
     INIT = 'init',
     LOADING = 'loading',
     SUCCESS = 'success',
     FAIL = 'fail'
 }
 
+export enum FeedOrderStatus {
+    DONE = 'done',
+    CREATED = 'created',
+    PENDING = 'pending'
+}
+
+export enum ElementState {
+    PRIMARY = "primary",
+    SUCCESS = "success"
+}
+
 export const DND_BURGER_INGREDIENT = 'DND_BURGER_INGREDIENT';
 export const DND_BURGER_BUN = 'DND_BURGER_BUN';
 export const DND_BURGER_CARD = 'DND_BURGER_CARD';
+
+export const FEED_MAX_VISIBLE_INGREDIENTS = 5;
 
 export const IMAGE_ALT_TEXT_MAP = {
     "643d69a5c3f7b9001cfa093c": "Светящаяся булочка с кратерами как на Луне",
@@ -47,8 +61,11 @@ export const FORGOT_PASSWORD_PATH = '/forgot-password';
 export const RESET_PASSWORD_PATH = '/reset-password';
 export const PROFILE_PATH = '/profile';
 export const PROFILE_ORDERS_PATH = '/profile/orders';
+export const PROFILE_ORDERS_NUMBER_PATH = '/profile/orders/:number';
 export const INGREDIENT_PATH = '/ingredients/:id';
 export const LOGOUT_PATH = '/logout';
+export const FEED_PATH = '/feed';
+export const FEED_NUMBER_PATH = '/feed/:number';
 export const ANY_PATH = '*';
 
 export type TIngredientId = keyof typeof IMAGE_ALT_TEXT_MAP;

@@ -1,25 +1,25 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {IIngredientResponse} from "../types/ingredientResponse";
-import {performGetRequest} from "../utils/request";
-import {IIngredient} from "../types/ingredient";
-import {TRootState} from "./store";
-import {Status} from "../utils/constants";
+import {IIngredientResponse} from "../../types/ingredientResponse";
+import {performGetRequest} from "../../utils/request";
+import {IIngredient} from "../../types/ingredient";
+import {ApiStatus} from "../../utils/constants";
 
 interface IBurgerIngredientsState {
-    items: Array<IIngredient>,
+    items: ReadonlyArray<IIngredient>,
     selectedIngredient: IIngredient | null,
-    status: Status
+    status: ApiStatus
     error: string | null,
 }
 
 const initialState: IBurgerIngredientsState = {
     items: [],
     selectedIngredient: null,
-    status: Status.INIT,
+    status: ApiStatus.INIT,
     error: null
 }
 
-export const fetchIngredients = createAsyncThunk<IIngredientResponse, void, { state: TRootState }>(
+export const fetchIngredients = createAsyncThunk<IIngredientResponse, void,
+    { state: { burgerIngredients: IBurgerIngredientsState } }>(
     'ingredients/fetch',
     async (_, thunkAPI) => {
         try {
@@ -38,26 +38,31 @@ export const fetchIngredients = createAsyncThunk<IIngredientResponse, void, { st
 );
 
 const burgerIngredientsSlice = createSlice({
-    name: 'burgerIngredients',
+    name: 'burger/ingredients',
     initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchIngredients.pending, (state) => {
-                state.status = Status.LOADING;
+                state.status = ApiStatus.LOADING;
                 state.error = null;
             })
             .addCase(fetchIngredients.fulfilled, (state, action) => {
-                state.status = Status.SUCCESS;
+                state.status = ApiStatus.SUCCESS;
                 state.items = action.payload.data;
                 state.error = null;
             })
             .addCase(fetchIngredients.rejected, (state, action) => {
-                state.status = Status.FAIL;
+                state.status = ApiStatus.FAIL;
                 state.error = action.payload as string || 'Неизвестная ошибка';
                 state.items = [];
             });
     },
 });
+
+export type BurgerIngredientsActions =
+    | ReturnType<typeof fetchIngredients.pending>
+    | ReturnType<typeof fetchIngredients.fulfilled>
+    | ReturnType<typeof fetchIngredients.rejected>;
 
 export default burgerIngredientsSlice.reducer;

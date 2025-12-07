@@ -27,7 +27,7 @@
 
 .nutrition_container {
     width: 100%;
-    height: 56px;
+    height: 200px;
     display: flex;
     flex-direction: row;
     align-items: center;

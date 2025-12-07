@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IIngredient} from "../types/ingredient";
+import {IIngredient} from "../../types/ingredient";
 
 interface IIngredientDetailsState {
     ingredientDetails: IIngredient | null
@@ -10,7 +10,7 @@ const initialState: IIngredientDetailsState = {
 }
 
 const ingredientDetailsSlice = createSlice({
-    name: 'ingredientDetails',
+    name: 'ingredient/details',
     initialState: initialState,
     reducers: {
         select: (state, action: PayloadAction<IIngredient>) => {
@@ -23,5 +23,9 @@ const ingredientDetailsSlice = createSlice({
 });
 
 export const {select, deselect} = ingredientDetailsSlice.actions;
+
+export type IngredientDetailsActions =
+    | ReturnType<typeof select>
+    | ReturnType<typeof deselect>;
 
 export default ingredientDetailsSlice.reducer;

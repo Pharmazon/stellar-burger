@@ -34,5 +34,5 @@ export default {
     getAccessToken,
     getRefreshToken,
     removeAccessToken,
-    removeRefreshToken,
+    removeRefreshToken
 };
