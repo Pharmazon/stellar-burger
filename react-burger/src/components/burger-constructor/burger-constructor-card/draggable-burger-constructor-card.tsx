@@ -85,6 +85,7 @@ const DraggableBurgerConstructorCard = ({
 
     return (
         <div
+            id={`constructor_${ingredient._id}`}
             ref={ref}
             className={className}
             style={{opacity: isDragging ? 0.5 : 1}}

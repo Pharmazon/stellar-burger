@@ -25,7 +25,7 @@ const ProfileInfo = () => {
         if (!user.isLoggedIn) {
             navigate(LOGIN_PATH);
         }
-    }, []);
+    }, [user.isLoggedIn, navigate]);
 
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setAnyInputChanged(e.target.value !== user.user?.name);

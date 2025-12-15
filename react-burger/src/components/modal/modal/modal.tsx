@@ -47,6 +47,7 @@ const Modal = ({width, height, children, onClose}: IModalProps) => {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div
+                    id={'modal_close_btn'}
                     className={styles.close_button}
                     onMouseLeave={onCloseIconMouseLeave}
                     onMouseOver={onCloseIconMouseOver}
@@ -56,7 +57,7 @@ const Modal = ({width, height, children, onClose}: IModalProps) => {
                         onClick={handleClose}
                     />
                 </div>
-                <div className={styles.content}>
+                <div id={'modal_window_content'} className={styles.content}>
                     {children}
                 </div>
             </div>

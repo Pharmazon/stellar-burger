@@ -134,6 +134,7 @@ const BurgerConstructor = () => {
         <div className={`${styles.main_container}`}>
             <div className={`${styles.burger_container} mt-25 ml-4`}>
                 <div
+                    id={'top_bun_area'}
                     ref={dropTopBun as any}
                     className={`${styles.bun_container} mb-4`}
                     style={{
@@ -153,6 +154,7 @@ const BurgerConstructor = () => {
                     }
                 </div>
                 <div
+                    id={'ingredients_area'}
                     ref={dropIngredient as any}
                     className={styles.ingredient_container}
                     style={{
@@ -172,6 +174,7 @@ const BurgerConstructor = () => {
                     }
                 </div>
                 <div
+                    id={'bottom_bun_area'}
                     ref={dropBottomBun as any}
                     className={`${styles.bun_container} mt-4`}
                     style={{

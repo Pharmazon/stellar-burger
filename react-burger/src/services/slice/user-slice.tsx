@@ -17,7 +17,7 @@ export interface IUserData {
     isPasswordRestored: boolean;
 }
 
-const initialState: IUserData = {
+export const initialState: IUserData = {
     user: null,
     status: ApiStatus.INIT,
     error: null,

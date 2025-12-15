@@ -51,6 +51,7 @@ const BurgerConstructorTotalCard = ({total, itemsToOrder}: IBurgerConstructorTot
             </div>
             <div className={'ml-10'}>
                 <Button
+                    data-test={'order-btn'}
                     htmlType="button"
                     type={ElementState.PRIMARY}
                     size="large"

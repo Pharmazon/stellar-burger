@@ -21,8 +21,7 @@ const IngredientDetails = ({ingredient}: IIngredientDetailsProps) => {
                     />
                 </div>
             </div>
-            <span
-                className={`${styles.description} text text_type_main-medium`}>{ingredient.name}</span>
+            <span className={`${styles.description} text text_type_main-medium`}>{ingredient.name}</span>
             <div className={`${styles.nutrition_container}`}>
                 <NutritionCard name={'Калории,ккал'} value={ingredient.calories}/>
                 <NutritionCard name={'Белки, г'} value={ingredient.proteins}/>

@@ -6,7 +6,7 @@ interface IPublicFeedState {
     data: IFeedData | null;
 }
 
-const initialState: IPublicFeedState = {
+export const initialState: IPublicFeedState = {
     data: null
 };
 

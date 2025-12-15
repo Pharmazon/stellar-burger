@@ -598,3 +598,13 @@ export default Title;
 48. npm install @reduxjs/toolkit
 49. npm i react-dnd react-dnd-html5-backend
 50. npm install --save-dev @types/library-name 
+
+## ТЕСТИРОВАНИЕ
+
+1. npm install jest --save-dev
+2. npm test
+3. npm install react-test-renderer --save-dev
+4. npm install fetch-mock --save-dev
+5. npm install redux-mock-store --save-dev
+6. npm install @testing-library/react --save-dev
+7. npm run test -- --coverage .

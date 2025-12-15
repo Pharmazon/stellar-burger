@@ -10,7 +10,9 @@ const OrderDetails = ({orderId}: IOrderDetailsProps) => {
 
     return (
         <>
-            <span className={`${styles.element_header} text text_type_digits-large mb-8`}>
+            <span
+                data-test={'order_number'}
+                className={`${styles.element_header} text text_type_digits-large mb-8`}>
                 {orderId.toString().padStart(6, '0')}
             </span>
             <span className={`${styles.element} mb-15 text text_type_main-medium`}>

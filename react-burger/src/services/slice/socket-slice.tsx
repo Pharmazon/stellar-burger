@@ -7,7 +7,7 @@ interface ISocketState {
     isLoading: boolean;
 }
 
-const initialState: ISocketState = {
+export const initialState: ISocketState = {
     wsConnected: false,
     error: null,
     isLoading: true

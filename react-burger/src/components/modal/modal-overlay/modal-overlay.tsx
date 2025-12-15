@@ -16,7 +16,11 @@ const ModalOverlay = ({children, onClose}: IModalOverlayProps) => {
     }
 
     return (
-        <div className={styles.container} onClick={handleOverlayClick}>
+        <div
+            id={'modal_window_overlay'}
+            className={styles.container}
+            onClick={handleOverlayClick}
+        >
             {children}
         </div>
     )

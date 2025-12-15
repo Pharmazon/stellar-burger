@@ -33,7 +33,7 @@ const PageOrder = () => {
         } else {
             dispatch(getOrder(orderNumber));
         }
-    }, [order, number, orderNumber, publicFeedData?.orders]);
+    }, [order, number, orderNumber, publicFeedData?.orders, dispatch]);
 
     const handleCloseModal = () => {
         dispatch(deselect());

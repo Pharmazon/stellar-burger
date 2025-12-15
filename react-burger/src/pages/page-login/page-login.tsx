@@ -39,6 +39,7 @@ const PageLogin = () => {
             <form className={styles.form} onSubmit={onLoginSubmit}>
                 <p className={'text text_type_main-medium'}>Вход</p>
                 <EmailInput
+                    data-test={'login_input'}
                     size={'default'}
                     placeholder={'E-mail'}
                     name={'email'}
@@ -47,12 +48,14 @@ const PageLogin = () => {
                     onChange={handleChange}
                 ></EmailInput>
                 <PasswordInput
+                    data-test={'password_input'}
                     size={'default'}
                     value={values.password}
                     onChange={handleChange}
                     name={'password'}
                 ></PasswordInput>
                 <Button
+                    data-test={'login_btn'}
                     htmlType={'submit'}
                     size={'large'}
                 >Войти</Button>

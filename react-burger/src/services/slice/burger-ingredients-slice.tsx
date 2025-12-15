@@ -11,7 +11,7 @@ interface IBurgerIngredientsState {
     error: string | null,
 }
 
-const initialState: IBurgerIngredientsState = {
+export const initialState: IBurgerIngredientsState = {
     items: [],
     selectedIngredient: null,
     status: ApiStatus.INIT,

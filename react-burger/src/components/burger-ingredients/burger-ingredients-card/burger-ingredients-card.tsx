@@ -21,6 +21,7 @@ const BurgerIngredientsCard = ({ingredient, quantityAdded}: IBurgerIngredientsCa
     
     return (
         <div
+            id={`ingredient-${ingredient._id}`}
             className={`${styles.main_container} ml-4 mt-4`}
             onClick={handleOnClick}
         >

@@ -28,7 +28,7 @@ const removeAccessToken = (): void => {
     Cookies.remove(ACCESS_TOKEN)
 }
 
-export default {
+const TokenService = {
     addAccessToken,
     addRefreshToken,
     getAccessToken,
@@ -36,3 +36,5 @@ export default {
     removeAccessToken,
     removeRefreshToken
 };
+
+export default TokenService;
