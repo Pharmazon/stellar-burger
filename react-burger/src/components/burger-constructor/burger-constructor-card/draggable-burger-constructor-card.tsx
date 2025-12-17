@@ -3,6 +3,7 @@ import {DND_BURGER_CARD} from "../../../utils/constants";
 import {useDrag, useDrop} from "react-dnd";
 import styles from './burger-constructor-card.module.css';
 import BurgerConstructorCard, {IBurgerConstructorCardProps} from "./burger-constructor-card";
+import {buildSelector, CySelector} from "../../../utils/selectors";
 
 interface IDraggableBurgerConstructorCardProps extends IBurgerConstructorCardProps {
     index: number;
@@ -85,7 +86,7 @@ const DraggableBurgerConstructorCard = ({
 
     return (
         <div
-            id={`constructor_${ingredient._id}`}
+            data-test={buildSelector(CySelector.CONSTRUCTOR_ID, ingredient._id)}
             ref={ref}
             className={className}
             style={{opacity: isDragging ? 0.5 : 1}}

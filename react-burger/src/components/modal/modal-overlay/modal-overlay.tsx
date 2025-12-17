@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react';
 import styles from './modal-overlay.module.css';
+import {CySelector} from "../../../utils/selectors";
 
 interface IModalOverlayProps {
     children: ReactNode
@@ -17,7 +18,7 @@ const ModalOverlay = ({children, onClose}: IModalOverlayProps) => {
 
     return (
         <div
-            id={'modal_window_overlay'}
+            data-test={CySelector.MODAL_WINDOW_OVERLAY}
             className={styles.container}
             onClick={handleOverlayClick}
         >

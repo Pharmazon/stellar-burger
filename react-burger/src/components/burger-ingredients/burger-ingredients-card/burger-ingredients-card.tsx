@@ -4,6 +4,7 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 import {ElementState, IMAGE_ALT_TEXT_MAP, INGREDIENT_PATH, TIngredientId} from "../../../utils/constants";
 import {IIngredient} from "../../../types/ingredient";
 import {useLocation, useNavigate} from "react-router-dom";
+import {buildSelector, CySelector} from "../../../utils/selectors";
 
 export interface IBurgerIngredientsCardProps {
     ingredient: IIngredient;
@@ -21,7 +22,7 @@ const BurgerIngredientsCard = ({ingredient, quantityAdded}: IBurgerIngredientsCa
     
     return (
         <div
-            id={`ingredient-${ingredient._id}`}
+            data-test={buildSelector(CySelector.INGREDIENT_ID, ingredient._id)}
             className={`${styles.main_container} ml-4 mt-4`}
             onClick={handleOnClick}
         >

@@ -3,6 +3,7 @@
 import {IUserResponse} from "../../src/types/userResponse";
 import {IIngredientResponse} from "../../src/types/ingredientResponse";
 import {IOrderResponse} from "../../src/types/orderResponse";
+import {HOME_PATH, IngredientSection} from "../../src/utils/constants";
 
 describe('E2E тест: добавление ингредиентов и создание заказа', () => {
 
@@ -24,52 +25,37 @@ describe('E2E тест: добавление ингредиентов и соз�
 
         cy.intercept('POST', '**/auth/login', {
             statusCode: 200,
-            body: mockUser
+            body: mockUser,
         }).as('loginRequest');
 
         cy.intercept('POST', '**/orders', {
             statusCode: 200,
-            body: orderMock
+            body: orderMock,
         }).as('createOrder');
 
-        cy.visit('/');
+        cy.intercept('POST', '**/logout', {
+            statusCode: 200
+        }).as('logoutRequest');
+        
+        cy.visit(HOME_PATH);
         cy.wait('@getIngredients');
+
+        cy.login(mockUser.user.email);
     });
 
-    function login() {
-        cy.visit('/login');
-        cy.get('[data-test="login_input"]').type(mockUser.user.email);
-        cy.get('[data-test="password_input"]').type('password');
-        cy.get('[data-test="login_btn"]').click();
-        cy.wait('@loginRequest');
+    it('должен оформить заказ и очистить конструктор', () => {
+        const bunIngredientId = ingredientsMock.data[0]._id;
+        const mainIngredientId = ingredientsMock.data[1]._id;
+        
+        // Переносим ингредиенты в конструктор
+        cy.dragIngredientToConstructor(bunIngredientId, IngredientSection.BUN);
+        cy.dragIngredientToConstructor(mainIngredientId, IngredientSection.MAIN);
 
-        cy.location('pathname').should('eq', '/');
-    }
-
-    it('должен успешно залогиниться, оформить заказ и очистить конструктор', () => {
-        const bunIngredient = ingredientsMock.data[0];
-        const mainIngredient = ingredientsMock.data[1];
-
-        login();
-
-        // добавляем в конструктор
-        cy.get(`#ingredient-${bunIngredient._id}`).should('exist').trigger('dragstart');
-        cy.get('#top_bun_area').should('exist').trigger('drop').trigger('dragend');
-
-        cy.get(`#ingredient-${mainIngredient._id}`).should('exist').trigger('dragstart');
-        cy.get('#ingredients_area').should('exist').trigger('drop').trigger('dragend');
-
-        cy.get('[data-test="order-btn"]').click({force: true});
-
-        // Проверяем открытие модального окна
-        cy.get('#modal_window_overlay').should('exist');
-        cy.get('#modal_window_content').should('exist');
-
-        cy.get('[data-test="order_number"]').should('contain', orderMock.order.number);
-
-        cy.get('#modal_close_btn').click();
-
-        cy.contains('.constructor-element__text', bunIngredient.name).should('not.exist');
-        cy.contains('.constructor-element__text', mainIngredient.name).should('not.exist');
+        // Делаем заказ
+        cy.placeOrderAndVerify(orderMock.order.number);
     });
-})
+
+    afterEach(() => {
+        cy.logout();
+    })
+});

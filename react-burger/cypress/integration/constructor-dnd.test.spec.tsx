@@ -1,9 +1,10 @@
 /// <reference types="cypress" />
 
 import {IIngredientResponse} from "../../src/types/ingredientResponse";
+import {HOME_PATH, IngredientSection} from "../../src/utils/constants";
 
 describe('E2E тест: drag&drop ингредиента в конструктор', () => {
-
+    
     let ingredientsMock: IIngredientResponse;
 
     before(() => {
@@ -16,30 +17,19 @@ describe('E2E тест: drag&drop ингредиента в конструкто
             body: ingredientsMock,
         }).as('getIngredients');
 
-        cy.visit('/');
+        cy.visit(HOME_PATH);
         cy.wait('@getIngredients');
     });
 
     it('должен перетаскивать булку и начинку в конструктор', () => {
-        const bunIngredient = ingredientsMock.data[0];
-        const mainIngredient = ingredientsMock.data[1];
+        const bunIngredientId = ingredientsMock.data[0]._id;
+        const mainIngredientId = ingredientsMock.data[1]._id;
 
-        // Перетаскиваем булку в зону top_bun_area и проверяем что она появилась в контейнере для булки
-        cy.get(`#ingredient-${bunIngredient._id}`).should('exist').trigger('dragstart');
-        cy.get('#top_bun_area').should('exist').trigger('drop').trigger('dragend');
-        cy.contains('.constructor-element__text', bunIngredient.name).should('exist');
+        // Переносим ингредиенты в конструктор
+        cy.dragIngredientToConstructor(bunIngredientId, IngredientSection.BUN);
+        cy.dragIngredientToConstructor(mainIngredientId, IngredientSection.MAIN);
 
-        // Перетаскиваем ингредиент в зону ingredients_area и проверяем что она появилась в контейнере для ингредиентов
-        cy.get(`#ingredient-${mainIngredient._id}`).should('exist').trigger('dragstart');
-        cy.get('#ingredients_area').should('exist').trigger('drop').trigger('dragend');
-        cy.contains('.constructor-element__text', mainIngredient.name).should('exist');
-
-
-        // Ищем добавленный ингредиент и удаляем его из конструктора
-        const elementToDeleteId = `constructor_${mainIngredient._id}`;
-        cy.get(`#${elementToDeleteId}`).within(() => {
-            cy.get('.constructor-element__action').should('exist').click();
-        });
-        cy.get(`#${elementToDeleteId}`).should('not.exist');
+        // Удаляем ингредиент
+        cy.removeIngredientFromConstructor(mainIngredientId);
     });
-})
+});

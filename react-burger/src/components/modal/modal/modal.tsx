@@ -4,6 +4,7 @@ import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import {createPortal} from "react-dom";
 import {ElementState} from "../../../utils/constants";
+import {CySelector} from "../../../utils/selectors";
 
 interface IModalProps {
     children: ReactNode
@@ -47,7 +48,7 @@ const Modal = ({width, height, children, onClose}: IModalProps) => {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div
-                    id={'modal_close_btn'}
+                    data-test={CySelector.MODAL_CLOSE_BUTTON}
                     className={styles.close_button}
                     onMouseLeave={onCloseIconMouseLeave}
                     onMouseOver={onCloseIconMouseOver}
@@ -57,7 +58,10 @@ const Modal = ({width, height, children, onClose}: IModalProps) => {
                         onClick={handleClose}
                     />
                 </div>
-                <div id={'modal_window_content'} className={styles.content}>
+                <div
+                    data-test={CySelector.MODAL_WINDOW_CONTENT}
+                    className={styles.content}
+                >
                     {children}
                 </div>
             </div>
