@@ -13,6 +13,7 @@ import {useDrop} from "react-dnd";
 import {addBun, addIngredient, moveIngredient} from "../../../services/slice/burger-constructor-slice";
 import DraggableBurgerConstructorCard from "../burger-constructor-card/draggable-burger-constructor-card";
 import {IIngredient} from "../../../types/ingredient";
+import {CySelector} from "../../../utils/selectors";
 
 const BurgerConstructor = () => {
 
@@ -134,6 +135,7 @@ const BurgerConstructor = () => {
         <div className={`${styles.main_container}`}>
             <div className={`${styles.burger_container} mt-25 ml-4`}>
                 <div
+                    data-test={CySelector.TOP_BUN_AREA}
                     ref={dropTopBun as any}
                     className={`${styles.bun_container} mb-4`}
                     style={{
@@ -153,6 +155,7 @@ const BurgerConstructor = () => {
                     }
                 </div>
                 <div
+                    data-test={CySelector.INGREDIENTS_AREA}
                     ref={dropIngredient as any}
                     className={styles.ingredient_container}
                     style={{
@@ -172,6 +175,7 @@ const BurgerConstructor = () => {
                     }
                 </div>
                 <div
+                    id={'bottom_bun_area'}
                     ref={dropBottomBun as any}
                     className={`${styles.bun_container} mt-4`}
                     style={{

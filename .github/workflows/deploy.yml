@@ -1,0 +1,48 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare environment
+        run: |
+          sudo apt-get update && sudo apt-get install -y sshpass
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install
+        run: |
+          cd react-burger
+          npm install
+
+      - name: Tests
+        run: |
+          cd react-burger
+          npm run test:unit
+
+      - name: Build
+        run: |
+          cd react-burger
+          npm run build
+
+      - name: Deploy to Server
+        env:
+          TARGET_HOST: ${{ secrets.TARGET_HOST }}
+          TARGET_PATH: ${{ secrets.TARGET_PATH }}
+          SSH_LOGIN: ${{ secrets.SSH_LOGIN }}
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+          -r ./react-burger/build/* \
+          "$SSH_LOGIN@$TARGET_HOST:$TARGET_PATH"

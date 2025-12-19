@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGE0YzkxYTY0MTc3MDAxYjMxY2U3MiIsImlhdCI6MTc2NTkxMjMzNSwiZXhwIjoxNzY1OTEzNTM1fQ.ou5RClzV1U_fvwNxWNvbm3YHROZGLeMVKR1oaBivgi0",
+  "refreshToken": "b0ec3468e5f05b9da9d8a1922625a932f3238c5cf73c82d191d385d3ed034b7c87c8727bb0f4ac8b",
+  "user": {
+    "email": "pharmazon@email.com",
+    "name": "pharmazon"
+  }
+}

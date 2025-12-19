@@ -1,6 +1,7 @@
 import React from "react";
 import styles from './order-details.module.css';
 import orderSuccessIcon from "../../../assets/order-success.png";
+import {CySelector} from "../../../utils/selectors";
 
 interface IOrderDetailsProps {
     orderId: number
@@ -10,7 +11,9 @@ const OrderDetails = ({orderId}: IOrderDetailsProps) => {
 
     return (
         <>
-            <span className={`${styles.element_header} text text_type_digits-large mb-8`}>
+            <span
+                data-test={CySelector.ORDER_NUMBER}
+                className={`${styles.element_header} text text_type_digits-large mb-8`}>
                 {orderId.toString().padStart(6, '0')}
             </span>
             <span className={`${styles.element} mb-15 text text_type_main-medium`}>

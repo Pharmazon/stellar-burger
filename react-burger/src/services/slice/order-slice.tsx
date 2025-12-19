@@ -6,14 +6,14 @@ import {ApiStatus} from "../../utils/constants";
 import {IFeedOrder} from "../../types/feedOrder";
 import {IFeedData} from "../../types/feedData";
 
-interface IOrderState {
+export interface IOrderState {
     order: IOrder | null;
     status: ApiStatus;
     error: string | null;
     orderInfo: IFeedOrder | null;
 }
 
-const initialState: IOrderState = {
+export const initialState: IOrderState = {
     order: null,
     status: ApiStatus.INIT,
     error: null,

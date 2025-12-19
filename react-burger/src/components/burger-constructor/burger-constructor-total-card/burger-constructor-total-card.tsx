@@ -10,6 +10,7 @@ import {clear} from "../../../services/slice/burger-constructor-slice";
 import {IIngredient} from "../../../types/ingredient";
 import {useNavigate} from "react-router-dom";
 import {ElementState, LOGIN_PATH} from "../../../utils/constants";
+import {CySelector} from "../../../utils/selectors";
 
 interface IBurgerConstructorTotalCardProps {
     total: number;
@@ -51,6 +52,7 @@ const BurgerConstructorTotalCard = ({total, itemsToOrder}: IBurgerConstructorTot
             </div>
             <div className={'ml-10'}>
                 <Button
+                    data-test={CySelector.ORDER_BUTTON}
                     htmlType="button"
                     type={ElementState.PRIMARY}
                     size="large"

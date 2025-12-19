@@ -6,6 +6,7 @@ import {useEffect} from "react";
 import {useAppDispatch} from "../../services/store";
 import {connect, disconnect} from "../../services/slice/actions";
 import tokens from "../../utils/token";
+import {CySelector} from "../../utils/selectors";
 
 const PageProfile = () => {
 
@@ -51,7 +52,10 @@ const PageProfile = () => {
                         <p className={getClassName(PROFILE_ORDERS_PATH)}>История заказов</p>
                     </Link>
                     <Logout>
-                        <p className={'text text_type_main-medium text_color_inactive'}>Выход</p>
+                        <p
+                            data-test={CySelector.LOGOUT_LINK}
+                            className={'text text_type_main-medium text_color_inactive'}
+                        >Выход</p>
                     </Logout>
                     <p
                         className={`${styles.opacity} pt-20 text text_type_main-small text_color_inactive`}

@@ -6,6 +6,7 @@ import {useAppDispatch} from "../../services/store";
 import {FORGOT_PASSWORD_PATH, HOME_PATH, REGISTER_PATH} from "../../utils/constants";
 import {login} from "../../services/slice/user-slice";
 import {useForm} from "../../hooks/useForm";
+import {CySelector} from "../../utils/selectors";
 
 const PageLogin = () => {
 
@@ -39,6 +40,7 @@ const PageLogin = () => {
             <form className={styles.form} onSubmit={onLoginSubmit}>
                 <p className={'text text_type_main-medium'}>Вход</p>
                 <EmailInput
+                    data-test={CySelector.LOGIN_INPUT}
                     size={'default'}
                     placeholder={'E-mail'}
                     name={'email'}
@@ -47,12 +49,14 @@ const PageLogin = () => {
                     onChange={handleChange}
                 ></EmailInput>
                 <PasswordInput
+                    data-test={CySelector.PASSWORD_INPUT}
                     size={'default'}
                     value={values.password}
                     onChange={handleChange}
                     name={'password'}
                 ></PasswordInput>
                 <Button
+                    data-test={CySelector.LOGIN_BUTTON}
                     htmlType={'submit'}
                     size={'large'}
                 >Войти</Button>

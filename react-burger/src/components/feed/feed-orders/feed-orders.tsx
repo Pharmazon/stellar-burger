@@ -42,11 +42,11 @@ export const FeedOrders = ({isPrivate, title}: IFeedOrdersProps) => {
         if (!isUserLoggedIn && isPrivate) {
             navigate(LOGIN_PATH);
         }
-    }, []);
+    }, [isPrivate, isUserLoggedIn, navigate]);
 
     const handleClick = (order: IFeedOrder) => {
         dispatch(setOrderInfo(order));
-        let path = location.pathname == PROFILE_ORDERS_PATH ? PROFILE_ORDERS_NUMBER_PATH : FEED_NUMBER_PATH;
+        let path = location.pathname === PROFILE_ORDERS_PATH ? PROFILE_ORDERS_NUMBER_PATH : FEED_NUMBER_PATH;
         navigate(path.replace(':number', String(order.number)), {state: {background: location}});
     };
 
